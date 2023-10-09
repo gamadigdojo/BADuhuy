@@ -15,6 +15,7 @@ public class Database {
     
 	public Database() {
 		// TODO Auto-generated constructor stub
+		connect();
 	}
 	
 	 public void connect() {
