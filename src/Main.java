@@ -1,7 +1,10 @@
 import model.Database;
-import view.HomePageView;
+import model.SharedStageHolder;
+import view.AddRecord;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import view.HomePageView;
 
 public class Main extends Application {
 
@@ -14,12 +17,18 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // Create an instance of the LoginView and pass a new LoginController to it
-    	HomePageView hp=new HomePageView(primaryStage);
+    public void start(Stage primaryStage) throws Exception {    
+        SharedStageHolder.setPrimaryStage(primaryStage); // Set the primary stage
 
-        // Start the login view
-        hp.show();
+        primaryStage.setTitle("JavaFX Shared Variable Example");
+
+        // Create initial scene
+        Scene HomePage = new HomePageView().createHomeScene();
+
+        // Set the initial scene
+        primaryStage.setScene(HomePage);
+
+        primaryStage.show();
     }
 
 

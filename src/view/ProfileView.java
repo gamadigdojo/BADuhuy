@@ -1,7 +1,5 @@
 package view;
 
-import java.sql.SQLException;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,15 +9,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.SharedStageHolder;
 
-public class HomePageView {
-	Button addRecord=new Button("Add record");
-	Label balance=new Label("Balance: 0");
+public class ProfileView {
 
-	public HomePageView() {
+    private Stage primaryStage;
+	public ProfileView() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Scene createHomeScene() {
+	public Scene createProfileScene() {
 		//-------------------NAVBAR------------------------//
         Navbar navbar = new Navbar();
         navbar.getHomeButton().setOnAction(event -> {
@@ -34,37 +31,16 @@ public class HomePageView {
         });
 		//-------------------NAVBAR------------------------//
         BorderPane root = new BorderPane();
-
         
-        //------------------Center Layout------------------//
         VBox layout = new VBox();
         layout.getChildren().addAll( 
-        		new Label("asiap"),
-        		new Label("apaiya")
+        		new Label("Berak"),
+        		new Label("dicelana")
         		); // Add your home view content here
         
-        
-       
-        //-----------------Footer Layout------------------//
-        addRecord.setOnAction(event-> {
-        	moveAddRecord();
-    	});
-        HBox footer=new HBox();
-        footer.getChildren().addAll(
-        		balance,
-        		addRecord
-        		);
-        
-
         root.setTop(navbar);
         root.setCenter(layout);
-        root.setBottom(footer);
         return new Scene(root, 600, 400);
     }
-	
-	void moveAddRecord() {
-		Scene AddRecordScene = new AddRecord().createAddScene();
-        SharedStageHolder.getPrimaryStage().setScene(AddRecordScene);
-	}
 
 }
