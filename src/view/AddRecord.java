@@ -17,12 +17,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Database;
+import model.Income;
+import model.Outcome;
 import model.SharedStageHolder;
 
 public class AddRecord {
 	  
-	 private Database db;
-	 Connection connection; 
+	
 	 
  	private ToggleButton toggleButton = new ToggleButton("Add new record");
 	
@@ -39,9 +40,7 @@ public class AddRecord {
    
 
 	public AddRecord() {
-		// TODO Auto-generated constructor stub
-        this.db = new Database();
-        connection=db.getConnection();
+      
 	}
 	 
 	public Scene createAddScene() {
@@ -107,7 +106,7 @@ public class AddRecord {
         root.setTop(navbar);
         root.setCenter(spacing);
 //        root.setBottom(footer);
-        return new Scene(root, 600, 400);
+        return new Scene(root, 700, 500);
 	}
 	
 
@@ -119,47 +118,20 @@ void insertProduct() throws SQLException {
 //	    NoteIncome VARCHAR(255)
   //belom masukin Income/Outcome ID
 	
-    String name = fieldName.getText();
+	String name = fieldName.getText();
     double total = Double.parseDouble(fieldPrice.getText());
     String date=fieldDate.getText();
     String note = fieldDescription.getText();
-    
-    String type=comboBox.getValue();
-    if(type.equals("Income")) {
-    	System.out.println("this is income");
-        String insertSQL = "INSERT INTO Income (Name,  TotalIncome,DateIncome,NoteIncome) VALUES (?, ?, ?,?)";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
-            preparedStatement.setString(1, name);
-            preparedStatement.setDouble(2, total);
-            preparedStatement.setString(3, date);
-            preparedStatement.setString(4, note);
-
-            // Execute the insert statement
-            preparedStatement.executeUpdate();
-
-            System.out.println("Product added successfully!");
-        }
-    }else if(type.equals("Outcome")) {
-    	System.out.println("this is outcome");
-    	  String insertSQL = "INSERT INTO Outcome (Name,  TotalOutcome,DateOutcome,NoteOutcome) VALUES (?, ?, ?,?)";
-
-          try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
-              preparedStatement.setString(1, name);
-              preparedStatement.setDouble(2, total);
-              preparedStatement.setString(3, date);
-              preparedStatement.setString(4, note);
-
-              // Execute the insert statement
-              preparedStatement.executeUpdate();
-
-              System.out.println("Product added successfully!");
-          }
-    }
-
-    
-    //clear the input
+	
+	 String type=comboBox.getValue();
+	    if(type.equals("Income")) {
+	    	Income.insertRecord(name,total, date ,note);
+	    }else if(type.equals("Outcome")) {
+	    	Outcome.insertRecord(name, total, date, note);
+	    }
+	
     fieldName.clear();
+    fieldDate.clear();
     fieldPrice.clear();
     fieldDescription.clear();
     

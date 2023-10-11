@@ -40,7 +40,7 @@ public class ProfileView {
         
         root.setTop(navbar);
         root.setCenter(layout);
-        return new Scene(root, 600, 400);
+        return new Scene(root, 700, 500);
     }
 
 }

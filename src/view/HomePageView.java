@@ -37,6 +37,13 @@ public class HomePageView {
 
         
         //------------------Center Layout------------------//
+//        TableView<DataModel> tableView = new TableView<>();
+//        TableColumn<DataModel, String> column1 = new TableColumn<>("Column 1");
+//        TableColumn<DataModel, String> column2 = new TableColumn<>("Column 2");
+//
+//        tableView.getColumns().addAll(column1, column2);
+        
+        
         VBox layout = new VBox();
         layout.getChildren().addAll( 
         		new Label("asiap"),
@@ -59,7 +66,7 @@ public class HomePageView {
         root.setTop(navbar);
         root.setCenter(layout);
         root.setBottom(footer);
-        return new Scene(root, 600, 400);
+        return new Scene(root, 700, 500);
     }
 	
 	void moveAddRecord() {
