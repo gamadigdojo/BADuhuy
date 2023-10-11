@@ -1,14 +1,19 @@
 package view;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Income;
 import model.SharedStageHolder;
 
 public class HomePageView {
@@ -37,21 +42,35 @@ public class HomePageView {
 
         
         //------------------Center Layout------------------//
-//        TableView<DataModel> tableView = new TableView<>();
-//        TableColumn<DataModel, String> column1 = new TableColumn<>("Column 1");
-//        TableColumn<DataModel, String> column2 = new TableColumn<>("Column 2");
-//
-//        tableView.getColumns().addAll(column1, column2);
         
+     // Create a TableView
+        TableView<Income> incomeTable = new TableView<>();
+        ArrayList<Income> incomeList=Income.retreiveRecord();
         
-        VBox layout = new VBox();
-        layout.getChildren().addAll( 
-        		new Label("asiap"),
-        		new Label("apaiya")
-        		); // Add your home view content here
+        //testing purposes
         
+        for(Income income: incomeList) {
+        	System.out.println("data set 1");
+        }
         
-       
+        TableColumn<Income, String> IncomeID= new TableColumn<>("IncomeID");
+        TableColumn<Income, String> Name= new TableColumn<>("Name");
+        TableColumn<Income, Double> TotalIncome= new TableColumn<>("TotalIncome");
+        TableColumn<Income, String> DateIncome= new TableColumn<>("DateIncome");
+        TableColumn<Income, String> NoteIncome= new TableColumn<>("NoteIncome");
+
+        IncomeID.setCellValueFactory(cellData -> cellData.getValue().incomeIDProperty());
+        Name.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        TotalIncome.setCellValueFactory(cellData -> cellData.getValue().totalIncomeObservable());
+        DateIncome.setCellValueFactory(cellData -> cellData.getValue().dateIncomeProperty());
+        NoteIncome.setCellValueFactory(cellData -> cellData.getValue().noteIncomeProperty());
+        
+        // Add the columns to the TableView
+        incomeTable.getColumns().addAll(IncomeID, Name,TotalIncome,DateIncome,NoteIncome);
+
+        // Populate the TableView with data from the ArrayList
+        incomeTable.getItems().addAll(incomeList);
+        
         //-----------------Footer Layout------------------//
         addRecord.setOnAction(event-> {
         	moveAddRecord();
@@ -62,9 +81,8 @@ public class HomePageView {
         		addRecord
         		);
         
-
         root.setTop(navbar);
-        root.setCenter(layout);
+        root.setCenter(incomeTable);
         root.setBottom(footer);
         return new Scene(root, 700, 500);
     }
