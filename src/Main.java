@@ -21,6 +21,8 @@ public class Main extends Application {
         SharedStageHolder.setPrimaryStage(primaryStage); // Set the primary stage
 
         primaryStage.setTitle("JavaFX Shared Variable Example");
+        
+        Database.connect();
 
         // Create initial scene
         Scene HomePage = new HomePageView().createHomeScene();

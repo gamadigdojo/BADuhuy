@@ -5,10 +5,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TableColumn;
 
-public class Database {
 
-	private Connection connection;
+public abstract class Database {
+
+	protected static Connection connection;
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/bad-lec";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "password";
@@ -18,12 +23,11 @@ public class Database {
 		connect();
 	}
 	
-	 public void connect() {
+	 public static void connect() {
 	        try {
 	            Class.forName("com.mysql.cj.jdbc.Driver");
 	            connection = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD);
-	            System.out.println("Connected to the database.");
-	        } catch (ClassNotFoundException e) {
+ 	        } catch (ClassNotFoundException e) {
 	            System.err.println("Error: MySQL JDBC driver not found.");
 	            e.printStackTrace();
 	        } catch (SQLException e) {
@@ -47,6 +51,14 @@ public class Database {
 	            }
 	        }
 	    }
+        
+        public abstract SimpleStringProperty idProperty();
+        public abstract SimpleStringProperty name();
+        public abstract SimpleDoubleProperty total();
+        public abstract SimpleStringProperty date();
+        public abstract SimpleStringProperty note();
+        public abstract ObservableValue<Double> totalObservable();
+        
 
 }
 
