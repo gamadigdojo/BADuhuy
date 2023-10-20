@@ -19,21 +19,21 @@ public class Income extends Database{
 //    NoteIncome VARCHAR(255)
 //belom masukin Income/Outcome ID
 	
-	private final SimpleStringProperty IncomeID;
-    private final SimpleStringProperty Name;
-    private final SimpleDoubleProperty TotalIncome;
-    private final SimpleStringProperty DateIncome;
-    private final SimpleStringProperty NoteIncome;
+	private final String IncomeID;
+    private final String Name;
+    private final Double TotalIncome;
+    private final String DateIncome;
+    private final String NoteIncome;
 	
 	
 	 
 	public Income(String IncomeID, String Name, double TotalIncome, String DateIncome, String NoteIncome) {
 		super();
-		 this.IncomeID = new SimpleStringProperty(IncomeID);
-	     this.Name = new SimpleStringProperty(Name);
-	     this.TotalIncome = new SimpleDoubleProperty(TotalIncome);
-	     this.DateIncome = new SimpleStringProperty(DateIncome);
-	     this.NoteIncome = new SimpleStringProperty(NoteIncome);
+		 this.IncomeID = IncomeID;
+	     this.Name = Name;
+	     this.TotalIncome = TotalIncome;
+	     this.DateIncome = DateIncome;
+	     this.NoteIncome = NoteIncome;
 	}
 	
 	public static ArrayList<Income> retreiveRecord() {
@@ -79,41 +79,29 @@ public class Income extends Database{
         }
 	 }
 
-	@Override
-	public SimpleStringProperty idProperty() {
-		// TODO Auto-generated method stub
+	public String getIncomeID() {
 		return IncomeID;
 	}
 
-	@Override
-	public SimpleStringProperty name() {
-		// TODO Auto-generated method stub
+	public String getName() {
 		return Name;
 	}
 
-	@Override
-	public SimpleDoubleProperty total() {
-		// TODO Auto-generated method stub
+	public Double getTotalIncome() {
 		return TotalIncome;
 	}
 
-	@Override
-	public SimpleStringProperty date() {
-		// TODO Auto-generated method stub
+	public String getDateIncome() {
 		return DateIncome;
 	}
 
-	@Override
-	public SimpleStringProperty note() {
-		// TODO Auto-generated method stub
+	public String getNoteIncome() {
 		return NoteIncome;
 	}
 
-	@Override
-	public ObservableValue<Double> totalObservable() {
-		// TODO Auto-generated method stub
-      return new SimpleObjectProperty<>(TotalIncome.get());
-	}
+	
+
+	 
 	
 	
 

@@ -52,12 +52,7 @@ public abstract class Database {
 	        }
 	    }
         
-        public abstract SimpleStringProperty idProperty();
-        public abstract SimpleStringProperty name();
-        public abstract SimpleDoubleProperty total();
-        public abstract SimpleStringProperty date();
-        public abstract SimpleStringProperty note();
-        public abstract ObservableValue<Double> totalObservable();
+    
         
 
 }

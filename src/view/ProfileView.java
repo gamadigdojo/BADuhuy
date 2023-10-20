@@ -29,15 +29,17 @@ public class ProfileView {
             Scene profileScene = new ProfileView().createProfileScene();
             SharedStageHolder.getPrimaryStage().setScene(profileScene); // Access the primary stage
         });
+       
 		//-------------------NAVBAR------------------------//
         BorderPane root = new BorderPane();
         
         VBox layout = new VBox();
         layout.getChildren().addAll( 
-        		new Label("Berak"),
-        		new Label("dicelana")
+        		new Label("haloo"),
+        		new Label("user")
         		); // Add your home view content here
         
+        navbar.setupNavbar();
         root.setTop(navbar);
         root.setCenter(layout);
         return new Scene(root, 700, 500);

@@ -12,21 +12,21 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
 public class Outcome extends Database{
-	private final SimpleStringProperty OutcomeID;
-    private final SimpleStringProperty Name;
-    private final SimpleDoubleProperty TotalOutcome;
-    private final SimpleStringProperty DateOutcome;
-    private final SimpleStringProperty NoteOutcome;
+	private final String OutcomeID;
+    private final String Name;
+    private final Double TotalOutcome;
+    private final String DateOutcome;
+    private final String NoteOutcome;
 	
     
 	
 	public Outcome(String OutcomeID, String Name, Double TotalOutcome, String DateOutcome, String NoteOutcome) {
 		super();
-		 this.OutcomeID = new SimpleStringProperty(OutcomeID);
-	     this.Name = new SimpleStringProperty(Name);
-	     this.TotalOutcome = new SimpleDoubleProperty(TotalOutcome);
-	     this.DateOutcome = new SimpleStringProperty(DateOutcome);
-	     this.NoteOutcome = new SimpleStringProperty(NoteOutcome);
+		 this.OutcomeID = OutcomeID;
+	     this.Name = Name;
+	     this.TotalOutcome = TotalOutcome;
+	     this.DateOutcome = DateOutcome;
+	     this.NoteOutcome = NoteOutcome;
 	}
 	
 	public static ArrayList<Outcome> retreiveRecord() {
@@ -72,43 +72,29 @@ public class Outcome extends Database{
 	          }
 		    }
 
-	@Override
-	public SimpleStringProperty idProperty() {
-		// TODO Auto-generated method stub
+	public String getOutcomeID() {
 		return OutcomeID;
 	}
 
-	@Override
-	public SimpleStringProperty name() {
-		// TODO Auto-generated method stub
+	public String getName() {
 		return Name;
 	}
 
-	@Override
-	public SimpleDoubleProperty total() {
-		// TODO Auto-generated method stub
+	public Double getTotalOutcome() {
 		return TotalOutcome;
 	}
 
-	@Override
-	public SimpleStringProperty date() {
-		// TODO Auto-generated method stub
+	public String getDateOutcome() {
 		return DateOutcome;
 	}
 
-	@Override
-	public SimpleStringProperty note() {
-		// TODO Auto-generated method stub
+	public String getNoteOutcome() {
 		return NoteOutcome;
 	}
 
-	@Override
-	public ObservableValue<Double> totalObservable() {
-		// TODO Auto-generated method stub
-	      return new SimpleObjectProperty<>(TotalOutcome.get());
-	}
 	
 	
 	 
+	
 	}
 

@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -42,33 +44,52 @@ public class HomePageView {
             SharedStageHolder.getPrimaryStage().setScene(profileScene); // Access the primary stage
         });
 		//-------------------NAVBAR------------------------//
+        VBox topBox = new VBox();
+        
+        
+        navbar.setupNavbar();
+        topBox.getChildren().add(navbar);
+        //------------------Header--------------------------//
+        
         BorderPane root = new BorderPane();
+        
+        VBox additionalHeader = new VBox();
+        Label headerLabel = new Label("what's your main goal today");
+        TextField inputBar = new TextField();
+        additionalHeader.getChildren().addAll(headerLabel, inputBar);
+        
+        topBox.getChildren().add(additionalHeader);
 
         
         //------------------Center Layout------------------//
- 
-        TableView<Database> OutputTable = new TableView<>();
         ArrayList<Income> incomeList=Income.retreiveRecord();
-        ArrayList<Outcome> outputList=Outcome.retreiveRecord();
+        ArrayList<Outcome> outcomeList=Outcome.retreiveRecord();
       
-        TableColumn<Database, String> id= new TableColumn<>("Id");
-        TableColumn<Database, String> name= new TableColumn<>("Name");
-        TableColumn<Database, Double> total= new TableColumn<>("Total");
-        TableColumn<Database, String> date= new TableColumn<>("Date");
-        TableColumn<Database, String> note= new TableColumn<>("Note");
+        VBox recordList=new VBox(15);
+        for(Income income: incomeList) {
+        	HBox incomeBox=new HBox(15);
+        	incomeBox.getChildren().addAll(
+        			new Label(income.getIncomeID()),
+        			new Label(income.getName()),
+        			new Label(income.getTotalIncome().toString()),
+        			new Label(income.getDateIncome()),
+        			new Label(income.getNoteIncome())
+        			);
+        	recordList.getChildren().add(incomeBox);
+        }
         
-        id.setCellValueFactory(cellData -> cellData.getValue().idProperty());
-        name.setCellValueFactory(cellData -> cellData.getValue().name());
-        total.setCellValueFactory(cellData -> cellData.getValue().totalObservable());
-        date.setCellValueFactory(cellData -> cellData.getValue().date());
-        note.setCellValueFactory(cellData -> cellData.getValue().note());
-        
-        // Add the columns to the TableView
-        OutputTable.getColumns().addAll(id, name,total,date,note);
-
-        // Populate the TableView with data from the ArrayList
-        OutputTable.getItems().addAll(incomeList);
-        OutputTable.getItems().addAll(outputList);
+        for(Outcome outcome: outcomeList) {
+        	HBox outcomeBox=new HBox(15);
+        	outcomeBox.getChildren().addAll(
+        			new Label(outcome.getOutcomeID()),
+        			new Label(outcome.getName()),
+        			new Label(outcome.getTotalOutcome().toString()),
+        			new Label(outcome.getDateOutcome()),
+        			new Label(outcome.getNoteOutcome())
+        			);
+        	recordList.getChildren().add(outcomeBox);
+        }
+       
         
         //-----------------Footer Layout------------------//
         addRecord.setOnAction(event-> {
@@ -80,8 +101,11 @@ public class HomePageView {
         		addRecord
         		);
         
-        root.setTop(navbar);
-        root.setCenter(OutputTable);
+        
+        Insets padding = new Insets(50, 80, 100, 80); // Insets: top, right, bottom, left
+        root.setPadding(padding);
+        root.setTop(topBox);
+        root.setCenter(recordList);
         root.setBottom(footer);
         return new Scene(root, 700, 500);
     }
@@ -90,5 +114,7 @@ public class HomePageView {
 		Scene AddRecordScene = new AddRecord().createAddScene();
         SharedStageHolder.getPrimaryStage().setScene(AddRecordScene);
 	}
+	
+ 
 
 }
