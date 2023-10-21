@@ -1,6 +1,9 @@
 import model.Database;
 import model.SharedStageHolder;
 import view.AddRecord;
+import view.HomePageView;
+import view.LoginView;
+import view.RegisterView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -24,10 +27,14 @@ public class Main extends Application {
 
         // Create initial scene
         Scene HomePage = new HomePageView().createHomeScene();
+        
+        LoginView lv = new LoginView(primaryStage);
+    //	lv.show();
 
         // Set the initial scene
         primaryStage.setScene(HomePage);
         primaryStage.show();
+ 
     }
 
 
