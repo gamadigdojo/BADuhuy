@@ -77,6 +77,8 @@ public class HomePageView {
         		addRecord
         		);
         
+        record.getStyleClass().add("record");
+        
         
         //------------------Center Layout------------------//
         ArrayList<Income> incomeList=Income.retreiveRecord();
@@ -118,8 +120,8 @@ public class HomePageView {
         
         //----------------SETUP-----------------//
         root.setTop(navbar);
-        root.setCenter(record);
-        root.setBottom(recordList);
+         
+        root.setCenter(recordList);
         
         //add external css
         Scene scene = new Scene(root, 700, 500);

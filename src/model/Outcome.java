@@ -16,23 +16,19 @@ public class Outcome extends Database{
     private final String Name;
     private final Double TotalOutcome;
     private final String DateOutcome;
-    private final String NoteOutcome;
 	
-    
-	
-	public Outcome(String OutcomeID, String Name, Double TotalOutcome, String DateOutcome, String NoteOutcome) {
+	public Outcome(String OutcomeID, String Name, Double TotalOutcome, String DateOutcome) {
 		super();
 		 this.OutcomeID = OutcomeID;
 	     this.Name = Name;
 	     this.TotalOutcome = TotalOutcome;
 	     this.DateOutcome = DateOutcome;
-	     this.NoteOutcome = NoteOutcome;
 	}
 	
 	public static ArrayList<Outcome> retreiveRecord() {
 		ArrayList<Outcome> outcomes=new ArrayList<>();
 		
-		String query = "SELECT OutcomeID,Name,TotalOutcome,DateOutcome,NoteOutcome FROM Outcome";
+		String query = "SELECT OutcomeID,Name,TotalOutcome,DateOutcome FROM Outcome";
 		try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
 		    ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -41,10 +37,9 @@ public class Outcome extends Database{
 		    	String Name = resultSet.getString("Name");
 		    	Double TotalOutcome = resultSet.getDouble("TotalOutcome");
 		    	String DateOutcome = resultSet.getString("DateOutcome");
-		    	String NoteOutcome = resultSet.getString("NoteOutcome");
 		        
 		        // Create a new ArrayList to store the data
-		        Outcome outcome=new Outcome(OutcomeID,Name,TotalOutcome,DateOutcome,NoteOutcome);
+		        Outcome outcome=new Outcome(OutcomeID,Name,TotalOutcome,DateOutcome);
 		        outcomes.add(outcome);
 		        
 		    }
@@ -56,14 +51,13 @@ public class Outcome extends Database{
 
 	 
 	
-	public static void insertRecord(String Name,double TotalOutcome, String DateOutcome, String NoteOutcome) throws SQLException {
-	    	  String insertSQL = "INSERT INTO Outcome (Name,  TotalOutcome,DateOutcome,NoteOutcome) VALUES (?, ?, ?,?)";
+	public static void insertRecord(String Name,double TotalOutcome, String DateOutcome) throws SQLException {
+	    	  String insertSQL = "INSERT INTO Outcome (Name,  TotalOutcome,DateOutcome) VALUES (?, ?, ?)";
 
 	          try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
 	              preparedStatement.setString(1, Name);
 	              preparedStatement.setDouble(2, TotalOutcome);
 	              preparedStatement.setString(3, DateOutcome);
-	              preparedStatement.setString(4, NoteOutcome);
 
 	              // Execute the insert statement
 	              preparedStatement.executeUpdate();
@@ -87,11 +81,6 @@ public class Outcome extends Database{
 	public String getDateOutcome() {
 		return DateOutcome;
 	}
-
-	public String getNoteOutcome() {
-		return NoteOutcome;
-	}
-
 	
 	
 	 

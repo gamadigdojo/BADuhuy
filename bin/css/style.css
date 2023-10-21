@@ -12,4 +12,13 @@
   
 }
 
+.addRecord {
+  -fx-content-display: center;
+   	-fx-padding: 40px; /* Padding values can be adjusted as needed */
+}
+
+.record {
+-fx-spacing: 20px;
+}
+
  

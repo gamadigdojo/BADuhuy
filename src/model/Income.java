@@ -22,24 +22,21 @@ public class Income extends Database{
 	private final String IncomeID;
     private final String Name;
     private final Double TotalIncome;
-    private final String DateIncome;
-    private final String NoteIncome;
-	
+    private final String DateIncome;	
 	
 	 
-	public Income(String IncomeID, String Name, double TotalIncome, String DateIncome, String NoteIncome) {
+	public Income(String IncomeID, String Name, double TotalIncome, String DateIncome) {
 		super();
 		 this.IncomeID = IncomeID;
 	     this.Name = Name;
 	     this.TotalIncome = TotalIncome;
 	     this.DateIncome = DateIncome;
-	     this.NoteIncome = NoteIncome;
 	}
 	
 	public static ArrayList<Income> retreiveRecord() {
 		ArrayList<Income> incomes=new ArrayList<>();
 		
-		String query = "SELECT IncomeID,Name,TotalIncome,DateIncome,NoteIncome FROM Income";
+		String query = "SELECT IncomeID,Name,TotalIncome,DateIncome FROM Income";
 		try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
 		    ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -48,10 +45,9 @@ public class Income extends Database{
 		    	String Name = resultSet.getString("Name");
 		    	Double TotalIncome = resultSet.getDouble("TotalIncome");
 		    	String DateIncome = resultSet.getString("DateIncome");
-		    	String NoteIncome = resultSet.getString("NoteIncome");
 		        
 		        // Create a new ArrayList to store the data
-		        Income income=new Income(IncomeID,Name,TotalIncome,DateIncome,NoteIncome);
+		        Income income=new Income(IncomeID,Name,TotalIncome,DateIncome);
 		        incomes.add(income);
 		        
 		    }
@@ -62,15 +58,14 @@ public class Income extends Database{
 		return incomes;
 	}
 	
-	public static void insertRecord(String Name,double TotalIncome, String DateIncome,String NoteIncome) throws SQLException {
+	public static void insertRecord(String Name,double TotalIncome, String DateIncome) throws SQLException {
 	    
-        String insertSQL = "INSERT INTO Income (Name,  TotalIncome,DateIncome,NoteIncome) VALUES (?, ?, ?,?)";
+        String insertSQL = "INSERT INTO Income (Name,  TotalIncome,DateIncome) VALUES (?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
             preparedStatement.setString(1, Name);
             preparedStatement.setDouble(2, TotalIncome);
             preparedStatement.setString(3, DateIncome);
-            preparedStatement.setString(4, NoteIncome);
 
             // Execute the insert statement
             preparedStatement.executeUpdate();
@@ -94,17 +89,6 @@ public class Income extends Database{
 	public String getDateIncome() {
 		return DateIncome;
 	}
-
-	public String getNoteIncome() {
-		return NoteIncome;
-	}
-
-	
-
-	 
-	
-	
-
 	 
  
 	

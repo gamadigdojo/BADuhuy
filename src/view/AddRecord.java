@@ -2,11 +2,14 @@ package view;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -33,10 +36,13 @@ public class AddRecord {
     Label labelPrice = new Label("Input Total Income/Outcome:");
     TextField fieldPrice = new TextField();
     Label labelDate = new Label("Input date:");
-    TextField fieldDate = new TextField();
-    TextArea fieldDescription = new TextArea();
     ComboBox<String> comboBox = new ComboBox<>();
     private Button addButton = new Button("Add new record");
+    
+    DatePicker datePicker = new DatePicker();
+
+    // Define a custom date format using DateTimeFormatter
+    DateTimeFormatter customDateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
    
 
 	public AddRecord() {
@@ -60,16 +66,15 @@ public class AddRecord {
         BorderPane root = new BorderPane();
         
         Label labelDescription = new Label("Enter Note Income/Outcome:");
-    	fieldDescription.setPromptText("Enter text here");
-    	fieldDescription.setPrefColumnCount(20);
-    	fieldDescription.setPrefRowCount(5);
     	comboBox.getItems().addAll("Income", "Outcome");
     	comboBox.setValue("Income");
         
         //------------------CENTER LAYOUT-----------------//
+        datePicker.setValue(LocalDate.now());
+    	
     	VBox inputBox = new VBox(10); // 10 is the spacing between elements
     	inputBox.getChildren().addAll(
-    			comboBox,labelName, fieldName, labelPrice, fieldPrice,labelDate,fieldDate,labelDescription,fieldDescription
+    			comboBox,labelName, fieldName, labelPrice, fieldPrice,labelDate,datePicker
     			);
     	addButton.setOnAction(event-> {
     		try {
@@ -99,42 +104,38 @@ public class AddRecord {
     		}
     	
     	});
+        Scene scene = new Scene(root, 700, 500);
+    	
+    	display.getStyleClass().add("addRecord");
+         
 
-    	HBox spacing=new HBox(10);
-    	spacing.getChildren().addAll(display);
-        
+    	 
         root.setTop(navbar);
-        root.setCenter(spacing);
+        root.setCenter(display);
 //        root.setBottom(footer);
-        return new Scene(root, 700, 500);
+        scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
+        return scene;
 	}
 	
 
 void insertProduct() throws SQLException {
-//	 IncomeID VARCHAR(5) PRIMARY KEY,
-//	    Name VARCHAR(255),
-//	    TotalIncome VARCHAR(255),
-//	    DateIncome VARCHAR(255),
-//	    NoteIncome VARCHAR(255)
-  //belom masukin Income/Outcome ID
 	
+	LocalDate selectedDate = datePicker.getValue();
 	String name = fieldName.getText();
     double total = Double.parseDouble(fieldPrice.getText());
-    String date=fieldDate.getText();
-    String note = fieldDescription.getText();
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); 
+    String formattedDate = selectedDate.format(dateFormatter);
 	
 	 String type=comboBox.getValue();
 	    if(type.equals("Income")) {
-	    	Income.insertRecord(name,total, date ,note);
+	    	Income.insertRecord(name,total, formattedDate);
 	    }else if(type.equals("Outcome")) {
-	    	Outcome.insertRecord(name, total, date, note);
+	    	Outcome.insertRecord(name, total, formattedDate);
 	    }
 	
     fieldName.clear();
-    fieldDate.clear();
-    fieldPrice.clear();
-    fieldDescription.clear();
-    
+    datePicker.setValue(LocalDate.now());
+    fieldPrice.clear();    
 }
 
 }
