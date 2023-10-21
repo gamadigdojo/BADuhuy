@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,11 +27,14 @@ import model.Outcome;
 import model.SharedStageHolder;
 
 public class HomePageView {
+ 
 	Button addRecord=new Button("Add record");
 	Label balance=new Label("Balance: 0");
+ 
 
 	public HomePageView() {
 		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public Scene createHomeScene() {
@@ -128,7 +132,4 @@ public class HomePageView {
 		Scene AddRecordScene = new AddRecord().createAddScene();
         SharedStageHolder.getPrimaryStage().setScene(AddRecordScene);
 	}
-	
- 
-
 }
