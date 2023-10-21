@@ -39,7 +39,7 @@ public class ProfileView {
         		new Label("user")
         		); // Add your home view content here
         
-        navbar.setupNavbar();
+//        navbar.setupNavbar();
         root.setTop(navbar);
         root.setCenter(layout);
         return new Scene(root, 700, 500);

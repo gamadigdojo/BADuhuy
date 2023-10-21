@@ -19,9 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {    
         SharedStageHolder.setPrimaryStage(primaryStage); // Set the primary stage
-
         primaryStage.setTitle("JavaFX Shared Variable Example");
-        
         Database.connect();
 
         // Create initial scene
@@ -29,7 +27,6 @@ public class Main extends Application {
 
         // Set the initial scene
         primaryStage.setScene(HomePage);
-
         primaryStage.show();
     }
 

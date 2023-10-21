@@ -13,9 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Database;
 import model.Income;
@@ -31,6 +34,7 @@ public class HomePageView {
 	}
 	
 	public Scene createHomeScene() {
+		BorderPane root = new BorderPane();
 		//-------------------NAVBAR------------------------//
         Navbar navbar = new Navbar();
         navbar.getHomeButton().setOnAction(event -> {
@@ -44,70 +48,83 @@ public class HomePageView {
             SharedStageHolder.getPrimaryStage().setScene(profileScene); // Access the primary stage
         });
 		//-------------------NAVBAR------------------------//
-        VBox topBox = new VBox();
         
         
-        navbar.setupNavbar();
-        topBox.getChildren().add(navbar);
         //------------------Header--------------------------//
-        
-        BorderPane root = new BorderPane();
-        
-        VBox additionalHeader = new VBox();
+        HBox header = new HBox();
+        //goal bar
+        VBox goalBar=new VBox();
         Label headerLabel = new Label("what's your main goal today");
         TextField inputBar = new TextField();
-        additionalHeader.getChildren().addAll(headerLabel, inputBar);
+        goalBar.getChildren().addAll(headerLabel, inputBar);
         
-        topBox.getChildren().add(additionalHeader);
-
+        //image
+        Image image = new Image("/images/logo.png"); // Adjust the path to your image.
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(100); // Set the desired width
+        imageView.setFitHeight(100); // Set the desired height
+        
+        header.getChildren().addAll(imageView,goalBar); 
+        header.getStyleClass().add("header");
+        
+        //-----------------Balance & Addrecord------------------//
+        addRecord.setOnAction(event-> {
+        	moveAddRecord();
+    	});
+        HBox record=new HBox();
+        record.getChildren().addAll(
+        		balance,
+        		addRecord
+        		);
+        
         
         //------------------Center Layout------------------//
         ArrayList<Income> incomeList=Income.retreiveRecord();
         ArrayList<Outcome> outcomeList=Outcome.retreiveRecord();
       
-        VBox recordList=new VBox(15);
+        VBox recordList=new VBox(20);
+        Insets padding = new Insets(50, 80, 100, 80); 
+        recordList.setPadding(padding);
+        
+        recordList.getChildren().add(header);
+        recordList.getChildren().add(record);
+        
         for(Income income: incomeList) {
         	HBox incomeBox=new HBox(15);
         	incomeBox.getChildren().addAll(
-        			new Label(income.getIncomeID()),
+        			new Label("(+)"),
         			new Label(income.getName()),
         			new Label(income.getTotalIncome().toString()),
-        			new Label(income.getDateIncome()),
-        			new Label(income.getNoteIncome())
+        			new Label(income.getDateIncome())
         			);
+            incomeBox.getStyleClass().add("hbox-with-border");
         	recordList.getChildren().add(incomeBox);
         }
         
         for(Outcome outcome: outcomeList) {
         	HBox outcomeBox=new HBox(15);
         	outcomeBox.getChildren().addAll(
-        			new Label(outcome.getOutcomeID()),
+        			new Label("(-)"),
         			new Label(outcome.getName()),
         			new Label(outcome.getTotalOutcome().toString()),
-        			new Label(outcome.getDateOutcome()),
-        			new Label(outcome.getNoteOutcome())
+        			new Label(outcome.getDateOutcome())
         			);
+            outcomeBox.getStyleClass().add("hbox-with-border");
         	recordList.getChildren().add(outcomeBox);
         }
        
         
-        //-----------------Footer Layout------------------//
-        addRecord.setOnAction(event-> {
-        	moveAddRecord();
-    	});
-        HBox footer=new HBox();
-        footer.getChildren().addAll(
-        		balance,
-        		addRecord
-        		);
+     
         
+        //----------------SETUP-----------------//
+        root.setTop(navbar);
+        root.setCenter(record);
+        root.setBottom(recordList);
         
-        Insets padding = new Insets(50, 80, 100, 80); // Insets: top, right, bottom, left
-        root.setPadding(padding);
-        root.setTop(topBox);
-        root.setCenter(recordList);
-        root.setBottom(footer);
-        return new Scene(root, 700, 500);
+        //add external css
+        Scene scene = new Scene(root, 700, 500);
+        scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
+        return scene;
     }
 	
 	void moveAddRecord() {

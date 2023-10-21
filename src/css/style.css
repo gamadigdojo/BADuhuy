@@ -1,0 +1,15 @@
+.hbox-with-border {
+     -fx-border-width: 2px;     /* Border width */
+     -fx-background-color: white;
+ 	-fx-padding: 10px; /* Padding values can be adjusted as needed */
+}
+
+.header {
+  -fx-padding: 10px;
+  -fx-background-color:white;
+  -fx-content-display: center;
+       -fx-background-color: lightgreen;
+  
+}
+
+ 
