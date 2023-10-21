@@ -84,7 +84,7 @@ public class RegisterView {
         // Simpan data ke database
         String insertSQL = "INSERT INTO User (Name,Email,Password) VALUES (?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+        try (PreparedStatement preparedStatement = Database.connection.prepareStatement(insertSQL)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, password);
