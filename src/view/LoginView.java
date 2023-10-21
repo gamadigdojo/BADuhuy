@@ -1,29 +1,30 @@
-import java.sql.Connection;
+package view;
+
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Database;
 
 public class LoginView {
     private Stage primaryStage;
-    private Database db;
-    Connection connection;
 
     private TextField emailField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private Label errorLabel = new Label();
 
-    public LoginView(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.db = new Database();
-        connection = db.getConnection();
+    public LoginView() {
+     //   this.db = new Database();
     }
 
-    public void show() {
-        VBox root = new VBox(10);
+    public Scene createLoginScene() {
+		BorderPane root = new BorderPane();
+
+        VBox login= new VBox(10);
         Button loginButton = new Button("Login");
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -32,7 +33,7 @@ public class LoginView {
             }
         });
 
-        root.getChildren().addAll(
+        login.getChildren().addAll(
             new Label("Email:"),
             emailField,
             new Label("Password:"),
@@ -41,9 +42,13 @@ public class LoginView {
             loginButton
         );
 
-        Scene scene = new Scene(root, 400, 300);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        //----------------SETUP-----------------//
+        root.setCenter(login);
+        
+        //add external css
+        Scene scene = new Scene(root, 700, 500);
+//        scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
+        return scene;
     }
 
     

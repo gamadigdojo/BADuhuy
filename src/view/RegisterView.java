@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Database;
@@ -22,14 +23,13 @@ public class RegisterView {
     private PasswordField passwordField = new PasswordField();
     private Label errorLabel = new Label();
 
-    public RegisterView(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.db = new Database();
-        connection = db.getConnection();
+    public RegisterView() {
     }
 
-    public void show() {
-        VBox root = new VBox(10);
+    public Scene createRegisterScene() {
+		BorderPane root = new BorderPane();
+
+        VBox register = new VBox(10);
         Button registerButton = new Button("Register");
         registerButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -43,7 +43,7 @@ public class RegisterView {
             }
         });
 
-        root.getChildren().addAll(
+        register.getChildren().addAll(
             new Label("Nama:"),
             nameField,
             new Label("Email:"),
@@ -54,9 +54,12 @@ public class RegisterView {
             registerButton
         );
 
-        Scene scene = new Scene(root, 400, 300);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        //----------------SETUP-----------------//
+        root.setCenter(register);
+        //add external css
+        Scene scene = new Scene(root, 700, 500);
+//        scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
+        return scene;
     }
 
     private void handleRegistration(ActionEvent event) throws SQLException {
