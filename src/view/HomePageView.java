@@ -39,19 +39,7 @@ public class HomePageView {
 	
 	public Scene createHomeScene() {
 		BorderPane root = new BorderPane();
-		//-------------------NAVBAR------------------------//
-        Navbar navbar = new Navbar(); //root navbar box
-        navbar.getHomeButton().setOnAction(event -> {
-            // Create and set the home scene
-            Scene homeScene = new HomePageView().createHomeScene();
-            SharedStageHolder.getPrimaryStage().setScene(homeScene); // Access the primary stage
-        });
-        navbar.getProfileButton().setOnAction(event -> {
-            // Create and set the profile view scene
-            Scene profileScene = new ProfileView().createProfileScene();
-            SharedStageHolder.getPrimaryStage().setScene(profileScene); // Access the primary stage
-        });
-		//-------------------NAVBAR------------------------//
+		 
         
         
         //------------------Header--------------------------//
@@ -59,7 +47,7 @@ public class HomePageView {
         VBox goalBar=new VBox();  
         Label headerLabel = new Label("what's your main goal today");
         TextField inputBar = new TextField();
-        goalBar.getChildren().addAll(headerLabel, inputBar);
+        goalBar.getChildren().addAll(new Label("Hello, user"),headerLabel, inputBar);
         
         Image image = new Image("/images/logo.png"); // Adjust the path to your image.
         ImageView imageView = new ImageView(image);
@@ -119,7 +107,6 @@ public class HomePageView {
      
         
         //----------------SETUP-----------------//
-        root.setTop(navbar);
         root.setCenter(recordList);
         
         //add external css

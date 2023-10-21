@@ -51,21 +51,6 @@ public class AddRecord {
 	 
 	public Scene createAddScene() {
 		BorderPane root = new BorderPane();
-		//-------------------NAVBAR------------------------//
-        Navbar navbar = new Navbar(); //navbar root
-        navbar.getHomeButton().setOnAction(event -> {
-            // Create and set the home scene
-            Scene homeScene = new HomePageView().createHomeScene();
-            SharedStageHolder.getPrimaryStage().setScene(homeScene); // Access the primary stage
-        });
-        navbar.getProfileButton().setOnAction(event -> {
-            // Create and set the profile view scene
-            Scene profileScene = new ProfileView().createProfileScene();
-            SharedStageHolder.getPrimaryStage().setScene(profileScene); // Access the primary stage
-        });
-		//-------------------NAVBAR------------------------//
-        
-        
         
         //------------------CENTER LAYOUT-----------------//
         VBox display = new VBox(10); //center layout root
@@ -104,7 +89,6 @@ public class AddRecord {
 
     	//-----------------------------SETUP------------------------------
     	Scene scene = new Scene(root, 700, 500);
-        root.setTop(navbar);
         root.setCenter(display);
         scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
         return scene;
@@ -129,6 +113,9 @@ void insertProduct() throws SQLException {
     fieldName.clear();
     datePicker.setValue(LocalDate.now());
     fieldPrice.clear();    
+    
+	Scene HomePageScene= new HomePageView().createHomeScene();
+    SharedStageHolder.getPrimaryStage().setScene(HomePageScene);
 }
 
 }
