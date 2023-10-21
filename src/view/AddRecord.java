@@ -50,8 +50,9 @@ public class AddRecord {
 	}
 	 
 	public Scene createAddScene() {
+		BorderPane root = new BorderPane();
 		//-------------------NAVBAR------------------------//
-        Navbar navbar = new Navbar();
+        Navbar navbar = new Navbar(); //navbar root
         navbar.getHomeButton().setOnAction(event -> {
             // Create and set the home scene
             Scene homeScene = new HomePageView().createHomeScene();
@@ -63,13 +64,16 @@ public class AddRecord {
             SharedStageHolder.getPrimaryStage().setScene(profileScene); // Access the primary stage
         });
 		//-------------------NAVBAR------------------------//
-        BorderPane root = new BorderPane();
+        
+        
+        
+        //------------------CENTER LAYOUT-----------------//
+        VBox display = new VBox(10); //center layout root
         
         Label labelDescription = new Label("Enter Note Income/Outcome:");
     	comboBox.getItems().addAll("Income", "Outcome");
     	comboBox.setValue("Income");
-        
-        //------------------CENTER LAYOUT-----------------//
+    	
         datePicker.setValue(LocalDate.now());
     	
     	VBox inputBox = new VBox(10); // 10 is the spacing between elements
@@ -85,34 +89,23 @@ public class AddRecord {
     		}
     	});
     	
-    	VBox display = new VBox(10); // 10 is the spacing between elements
+    	 // 10 is the spacing between elements
     	display.getChildren().addAll(
     		new Label("Welcome, user!"),
     	    new Label("Add your income/outcome"),
-    	    toggleButton
+    	    inputBox,
+    	    addButton
     	);
     	
-    	toggleButton.setOnAction(event -> {
-    		if(toggleButton.isSelected()) {
-    			display.getChildren().add(inputBox);
-    			inputBox.getChildren().add(addButton);
-    	        toggleButton.setText("Back");
-    		}else {
-    			display.getChildren().remove(inputBox);
-    			inputBox.getChildren().remove(addButton);
-    	        toggleButton.setText("Add new record");
-    		}
-    	
-    	});
-        Scene scene = new Scene(root, 700, 500);
-    	
-    	display.getStyleClass().add("addRecord");
-         
-
     	 
+       
+    	
+    	display.getStyleClass().add("addRecordDisplay"); //adding style
+
+    	//-----------------------------SETUP------------------------------
+    	Scene scene = new Scene(root, 700, 500);
         root.setTop(navbar);
         root.setCenter(display);
-//        root.setBottom(footer);
         scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
         return scene;
 	}

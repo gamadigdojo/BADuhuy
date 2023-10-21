@@ -1,10 +1,11 @@
-.hbox-with-border {
+/* home */
+.homeIncomeBox{
      -fx-border-width: 2px;     /* Border width */
      -fx-background-color: white;
  	-fx-padding: 10px; /* Padding values can be adjusted as needed */
 }
 
-.header {
+.homeHeader {
   -fx-padding: 10px;
   -fx-background-color:white;
   -fx-content-display: center;
@@ -12,13 +13,16 @@
   
 }
 
-.addRecord {
+.homeRecord {
+-fx-spacing: 20px;
+}
+
+/* add record */
+.addRecordDisplay {
   -fx-content-display: center;
    	-fx-padding: 40px; /* Padding values can be adjusted as needed */
 }
 
-.record {
--fx-spacing: 20px;
-}
+
 
  

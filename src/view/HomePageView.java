@@ -36,7 +36,7 @@ public class HomePageView {
 	public Scene createHomeScene() {
 		BorderPane root = new BorderPane();
 		//-------------------NAVBAR------------------------//
-        Navbar navbar = new Navbar();
+        Navbar navbar = new Navbar(); //root navbar box
         navbar.getHomeButton().setOnAction(event -> {
             // Create and set the home scene
             Scene homeScene = new HomePageView().createHomeScene();
@@ -51,43 +51,39 @@ public class HomePageView {
         
         
         //------------------Header--------------------------//
-        HBox header = new HBox();
-        //goal bar
-        VBox goalBar=new VBox();
+        HBox header = new HBox();  //root header box
+        VBox goalBar=new VBox();  
         Label headerLabel = new Label("what's your main goal today");
         TextField inputBar = new TextField();
         goalBar.getChildren().addAll(headerLabel, inputBar);
         
-        //image
         Image image = new Image("/images/logo.png"); // Adjust the path to your image.
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(100); // Set the desired width
         imageView.setFitHeight(100); // Set the desired height
         
+        
         header.getChildren().addAll(imageView,goalBar); 
-        header.getStyleClass().add("header");
+        header.getStyleClass().add("homeHeader"); //adding style to header
         
         //-----------------Balance & Addrecord------------------//
+        HBox record=new HBox(); //root balance& addrecord
         addRecord.setOnAction(event-> {
         	moveAddRecord();
     	});
-        HBox record=new HBox();
         record.getChildren().addAll(
         		balance,
         		addRecord
         		);
-        
-        record.getStyleClass().add("record");
-        
-        
+        record.getStyleClass().add("homeRecord"); //adding style to record;
         //------------------Center Layout------------------//
+        VBox recordList=new VBox(20); //root center layout
+
         ArrayList<Income> incomeList=Income.retreiveRecord();
         ArrayList<Outcome> outcomeList=Outcome.retreiveRecord();
-      
-        VBox recordList=new VBox(20);
-        Insets padding = new Insets(50, 80, 100, 80); 
-        recordList.setPadding(padding);
         
+      
+        recordList.setPadding(new Insets(50, 80, 100, 80));
         recordList.getChildren().add(header);
         recordList.getChildren().add(record);
         
@@ -99,7 +95,7 @@ public class HomePageView {
         			new Label(income.getTotalIncome().toString()),
         			new Label(income.getDateIncome())
         			);
-            incomeBox.getStyleClass().add("hbox-with-border");
+            incomeBox.getStyleClass().add("homeIncomeBox");
         	recordList.getChildren().add(incomeBox);
         }
         
@@ -111,7 +107,7 @@ public class HomePageView {
         			new Label(outcome.getTotalOutcome().toString()),
         			new Label(outcome.getDateOutcome())
         			);
-            outcomeBox.getStyleClass().add("hbox-with-border");
+            outcomeBox.getStyleClass().add("homeIncomeBox");
         	recordList.getChildren().add(outcomeBox);
         }
        
@@ -120,7 +116,6 @@ public class HomePageView {
         
         //----------------SETUP-----------------//
         root.setTop(navbar);
-         
         root.setCenter(recordList);
         
         //add external css
