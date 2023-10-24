@@ -31,9 +31,8 @@ public class Main extends Application {
         Scene registerScene=new RegisterView().createRegisterScene();
         
         // Set the initial scene
-        primaryStage.setScene(HomePage);
+        primaryStage.setScene(registerScene);
         primaryStage.show();
- 
     }
 
 

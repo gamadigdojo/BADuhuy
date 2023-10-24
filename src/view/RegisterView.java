@@ -67,8 +67,18 @@ public class RegisterView {
         String email = emailField.getText();
         String password = passwordField.getText();
         
-        if (email.isEmpty() || password.isEmpty() || name.isEmpty()) {
-            errorLabel.setText("Nama, email, dan password harus diisi.");
+        if (name.isEmpty()) {
+            errorLabel.setText("Nama password harus diisi.");
+            return;
+        }
+        
+        if (email.isEmpty()) {
+        	errorLabel.setText("Email harus diisi.");
+            return;
+        }
+        
+        if (password.isEmpty()) {
+        	errorLabel.setText("Password harus diisi.");
             return;
         }
 

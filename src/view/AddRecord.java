@@ -25,9 +25,6 @@ import model.Outcome;
 import model.SharedStageHolder;
 
 public class AddRecord {
-	  
-	
-	 
  	private ToggleButton toggleButton = new ToggleButton("Add new record");
 	
 	//input field
