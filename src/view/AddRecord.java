@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import components.Navbar;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,9 +26,6 @@ import model.Outcome;
 import model.SharedStageHolder;
 
 public class AddRecord {
-	  
-	
-	 
  	private ToggleButton toggleButton = new ToggleButton("Add new record");
 	
 	//input field
@@ -43,14 +41,19 @@ public class AddRecord {
 
     // Define a custom date format using DateTimeFormatter
     DateTimeFormatter customDateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-   
 
-	public AddRecord() {
+    public AddRecord() {
       
 	}
 	 
 	public Scene createAddScene() {
 		BorderPane root = new BorderPane();
+		Navbar navbar = new Navbar();
+		HBox navigationBar = navbar.createNavbar();
+
+
+
+		root.setTop(navigationBar);
         
         //------------------CENTER LAYOUT-----------------//
         VBox display = new VBox(10); //center layout root
@@ -76,8 +79,6 @@ public class AddRecord {
     	
     	 // 10 is the spacing between elements
     	display.getChildren().addAll(
-    		new Label("Welcome, user!"),
-    	    new Label("Add your income/outcome"),
     	    inputBox,
     	    addButton
     	);
@@ -114,7 +115,7 @@ void insertProduct() throws SQLException {
     datePicker.setValue(LocalDate.now());
     fieldPrice.clear();    
     
-	Scene HomePageScene= new HomePageView().createHomeScene();
+	Scene HomePageScene= new HomePage().createHomeScene();
     SharedStageHolder.getPrimaryStage().setScene(HomePageScene);
 }
 

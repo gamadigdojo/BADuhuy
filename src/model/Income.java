@@ -11,7 +11,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
-public class Income extends Database{
+public class Income extends Record{
+
+
 //	 IncomeID VARCHAR(5) PRIMARY KEY,
 //    Name VARCHAR(255),
 //    TotalIncome VARCHAR(255),
@@ -20,17 +22,9 @@ public class Income extends Database{
 //belom masukin Income/Outcome ID
 	
 	private final String IncomeID;
-    private final String Name;
-    private final Double TotalIncome;
-    private final String DateIncome;	
-	
-	 
-	public Income(String IncomeID, String Name, double TotalIncome, String DateIncome) {
-		super();
-		 this.IncomeID = IncomeID;
-	     this.Name = Name;
-	     this.TotalIncome = TotalIncome;
-	     this.DateIncome = DateIncome;
+	public Income(String IncomeID,String name, Double total, String date) {
+		super(name, total, date);
+		this.IncomeID=IncomeID;
 	}
 	
 	public static ArrayList<Income> retreiveRecord() {
@@ -62,7 +56,7 @@ public class Income extends Database{
 	    
         String insertSQL = "INSERT INTO Income (Name,  TotalIncome,DateIncome) VALUES (?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+        try (PreparedStatement preparedStatement = Database.connection.prepareStatement(insertSQL)) {
             preparedStatement.setString(1, Name);
             preparedStatement.setDouble(2, TotalIncome);
             preparedStatement.setString(3, DateIncome);
@@ -78,17 +72,6 @@ public class Income extends Database{
 		return IncomeID;
 	}
 
-	public String getName() {
-		return Name;
-	}
-
-	public Double getTotalIncome() {
-		return TotalIncome;
-	}
-
-	public String getDateIncome() {
-		return DateIncome;
-	}
 	 
  
 	

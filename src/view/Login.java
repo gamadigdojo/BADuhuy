@@ -10,14 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Database;
 
-public class LoginView {
+public class Login {
     private Stage primaryStage;
 
     private TextField emailField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private Label errorLabel = new Label();
 
-    public LoginView() {
+    public Login() {
      //   this.db = new Database();
     }
 

@@ -1,13 +1,13 @@
 import model.Database;
 import model.SharedStageHolder;
 import view.AddRecord;
-import view.HomePageView;
-import view.LoginView;
-import view.RegisterView;
+import view.HomePage;
+import view.Login;
+import view.Register;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.HomePageView;
+import view.HomePage;
 
 public class Main extends Application {
 
@@ -26,9 +26,9 @@ public class Main extends Application {
         Database.connect();
 
         // Create initial scene
-        Scene HomePage = new HomePageView().createHomeScene();
-        Scene loginScene=new LoginView().createLoginScene();
-        Scene registerScene=new RegisterView().createRegisterScene();
+        Scene HomePage = new HomePage().createHomeScene();
+        Scene loginScene=new Login().createLoginScene();
+        Scene registerScene=new Register().createRegisterScene();
         
         // Set the initial scene
         primaryStage.setScene(HomePage);

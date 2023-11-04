@@ -32,9 +32,43 @@
 
 /* add record */
 .addRecordDisplay {
-  -fx-content-display: center;
-   	-fx-padding: 40px; /* Padding values can be adjusted as needed */
+   
+    -fx-content-display: center;
+    -fx-padding: 40px; /* Padding values can be adjusted as needed */
+ }
+ 
+ .navbar {
+    -fx-background-color: white; /* Set the background color to white */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 2, 0, 0, 2); /* Apply a simple drop shadow effect */
+    -fx-padding:10px;
+    
 }
+
+.navbar Button {
+    -fx-font-size: 16px; /* Change the font size to 16 pixels */
+    -fx-background-color: transparent; /* Make the background transparent */
+    -fx-text-fill: green; /* Set the text color to green */
+    -fx-alignment: center; /* Center the text vertically */
+}
+
+.aboutHeading{
+   -fx-font-size:26px;
+}
+
+.aboutVBox {
+    -fx-pref-width: 80%; /* Set the width to 80% */
+    -fx-alignment: center; /* Center the content */
+    
+}
+
+.row {
+  -fx-padding:15px;
+  -fx-background-color: white;
+  -fx-border-radius: 6px; /* Border radius for the border, if needed */
+  
+
+}
+ 
 
 
 

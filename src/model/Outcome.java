@@ -11,19 +11,17 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
-public class Outcome extends Database{
+public class Outcome extends Record{
+
+
 	private final String OutcomeID;
-    private final String Name;
-    private final Double TotalOutcome;
-    private final String DateOutcome;
-	
-	public Outcome(String OutcomeID, String Name, Double TotalOutcome, String DateOutcome) {
-		super();
-		 this.OutcomeID = OutcomeID;
-	     this.Name = Name;
-	     this.TotalOutcome = TotalOutcome;
-	     this.DateOutcome = DateOutcome;
+   
+	public Outcome(String OutcomeID,String name, Double total, String date) {
+		super(name, total, date);
+		this.OutcomeID=OutcomeID;
+		// TODO Auto-generated constructor stub
 	}
+	 
 	
 	public static ArrayList<Outcome> retreiveRecord() {
 		ArrayList<Outcome> outcomes=new ArrayList<>();
@@ -54,7 +52,7 @@ public class Outcome extends Database{
 	public static void insertRecord(String Name,double TotalOutcome, String DateOutcome) throws SQLException {
 	    	  String insertSQL = "INSERT INTO Outcome (Name,  TotalOutcome,DateOutcome) VALUES (?, ?, ?)";
 
-	          try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+	          try (PreparedStatement preparedStatement = Database.connection.prepareStatement(insertSQL)) {
 	              preparedStatement.setString(1, Name);
 	              preparedStatement.setDouble(2, TotalOutcome);
 	              preparedStatement.setString(3, DateOutcome);
@@ -69,20 +67,6 @@ public class Outcome extends Database{
 	public String getOutcomeID() {
 		return OutcomeID;
 	}
-
-	public String getName() {
-		return Name;
-	}
-
-	public Double getTotalOutcome() {
-		return TotalOutcome;
-	}
-
-	public String getDateOutcome() {
-		return DateOutcome;
-	}
-	
-	
 	 
 	
 	}

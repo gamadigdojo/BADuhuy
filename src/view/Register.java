@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Database;
 
-public class RegisterView {
+public class Register {
     private Stage primaryStage;
     private Database db;
     Connection connection;
@@ -23,7 +23,7 @@ public class RegisterView {
     private PasswordField passwordField = new PasswordField();
     private Label errorLabel = new Label();
 
-    public RegisterView() {
+    public Register() {
     }
 
     public Scene createRegisterScene() {
