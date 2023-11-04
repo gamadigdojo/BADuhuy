@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -31,7 +32,6 @@ public class HomePageView {
 	Button addRecord=new Button("Add record");
 	Label balance=new Label("Balance: 0");
  
-
 	public HomePageView() {
 		// TODO Auto-generated constructor stub
 		
@@ -39,21 +39,20 @@ public class HomePageView {
 	
 	public Scene createHomeScene() {
 		BorderPane root = new BorderPane();
-		 
-        
         
         //------------------Header--------------------------//
         HBox header = new HBox();  //root header box
         VBox goalBar=new VBox();  
-        Label headerLabel = new Label("what's your main goal today");
         TextField inputBar = new TextField();
-        goalBar.getChildren().addAll(new Label("Hello, user"),headerLabel, inputBar);
-        
+        inputBar.getStyleClass().add("goalInput");
+        goalBar.getChildren().addAll(new Label("What is your main goal in using Piggy Pocket?"), inputBar);
+        goalBar.getStyleClass().add("goalBar");      
         Image image = new Image("/images/logo.png"); // Adjust the path to your image.
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(100); // Set the desired width
         imageView.setFitHeight(100); // Set the desired height
-        
+        HBox.setHgrow(goalBar, javafx.scene.layout.Priority.ALWAYS);
+
         
         header.getChildren().addAll(imageView,goalBar); 
         header.getStyleClass().add("homeHeader"); //adding style to header
@@ -77,7 +76,6 @@ public class HomePageView {
       
         recordList.setPadding(new Insets(50, 80, 100, 80));
         recordList.getChildren().add(header);
-        recordList.getChildren().add(record);
         
         for(Income income: incomeList) {
         	HBox incomeBox=new HBox(15);
@@ -104,10 +102,12 @@ public class HomePageView {
         }
        
         
-     
+        ScrollPane scrollPane = new ScrollPane(recordList);
+        scrollPane.setFitToWidth(true); // Allow the ScrollPane to fill the width
         
         //----------------SETUP-----------------//
-        root.setCenter(recordList);
+        root.setCenter(scrollPane);
+        root.setBottom(record);
         
         //add external css
         Scene scene = new Scene(root, 700, 500);

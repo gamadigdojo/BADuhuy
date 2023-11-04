@@ -6,15 +6,28 @@
 }
 
 .homeHeader {
-  -fx-padding: 10px;
-  -fx-background-color:white;
-  -fx-content-display: center;
-       -fx-background-color: lightgreen;
-  
+    -fx-padding:15px;
+    -fx-background-color: rgba(56, 142, 60, 0.3); /* Background color with 30% opacity */
+    -fx-background-radius: 6px; /* Border radius */
+    -fx-border-radius: 6px; /* Border radius for the border, if needed */
+}
+
+.goalBar {
+    -fx-padding: 0 30 0 30; /* Top, Right, Bottom, Left */
+    -fx-alignment: center;
+    
+}
+
+.goalBar > Label {
+    -fx-font-size: 14px; /* Change the font size to 16 pixels */
+    -fx-font-color:white;
+        -fx-text-fill: white; /* Change the text color to white */
+    
 }
 
 .homeRecord {
 -fx-spacing: 20px;
+ -fx-padding: 10px; /* Padding for the HBox (adjust as needed) */
 }
 
 /* add record */
