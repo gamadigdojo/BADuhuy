@@ -12,14 +12,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
 public class Income extends Record{
-
-
-//	 IncomeID VARCHAR(5) PRIMARY KEY,
-//    Name VARCHAR(255),
-//    TotalIncome VARCHAR(255),
-//    DateIncome VARCHAR(255),
-//    NoteIncome VARCHAR(255)
-//belom masukin Income/Outcome ID
 	
 	private final String IncomeID;
 	public Income(String IncomeID,String name, Double total, String date) {

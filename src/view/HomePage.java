@@ -5,6 +5,7 @@ import model.Record;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import components.Navbar;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -30,6 +31,9 @@ import model.Database;
 import model.Income;
 import model.Outcome;
 import model.SharedStageHolder;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 
 public class HomePage {
  
@@ -39,9 +43,16 @@ public class HomePage {
      ArrayList<Outcome> outcomeList=Outcome.retreiveRecord();    
      ArrayList<Record> combinedRecords= new ArrayList<>();
  
+   
+     
+     VBox recordList=new VBox(10); //root center layout
+     HBox filter=filterButton();
+     String filterSorting="Descending";
+     String filterType="All";
+ 
 	public Scene createHomeScene() {
 		BorderPane root = new BorderPane();
-		VBox scrollRoot=new VBox();
+		VBox scrollRoot=new VBox(); //adding scrollable content
 		ScrollPane scrollContent = new ScrollPane(scrollRoot);
 		scrollContent.setFitToWidth(true); 
 		
@@ -49,35 +60,15 @@ public class HomePage {
 		HBox navigationBar = navbar.createNavbar();
 		scrollRoot.getChildren().add(navigationBar);
 		
-		HBox header=createHeader();
 		HBox footer=createFooter();
-        
+	    recordList.setPadding(new Insets(50, 80, 100, 80));
+		
+		
+
       
-		VBox recordList=new VBox(20); //root center layout
-        recordList.setPadding(new Insets(50, 80, 100, 80));
-        recordList.getChildren().add(header);
-        insertAndSortRecord();
-        //output
-        for(Record item:combinedRecords) {
-        	HBox incomeBox=new HBox(15);
-        	if(item instanceof Income) {
-        		incomeBox.getChildren().addAll(
-            			new Label("(+)"),
-            			new Label(item.getName()),
-            			new Label(item.getTotal().toString()),
-            			new Label(item.getDate())
-            			);
-        	}else if(item instanceof Outcome) {
-        		incomeBox.getChildren().addAll(
-            			new Label("(-)"),
-            			new Label(item.getName()),
-            			new Label(item.getTotal().toString()),
-            			new Label(item.getDate())
-            			);
-        	}
-            incomeBox.getStyleClass().add("homeIncomeBox");
-        	recordList.getChildren().add(incomeBox);
-        }
+        resetRecord();
+        insertAndSortRecord("Descending");
+        printRecord("All");
         scrollRoot.getChildren().add(recordList);
         
       
@@ -92,7 +83,78 @@ public class HomePage {
         return scene;
     }
 	
-	public void insertAndSortRecord() {
+	
+	public void resetRecord() {
+
+	     HBox header=createHeader();
+	     
+	    combinedRecords.clear();
+		recordList.getChildren().clear();
+        recordList.getChildren().add(header);
+        recordList.getChildren().add(filter);
+	}
+	
+	public HBox filterButton() {
+		HBox filter=new HBox();
+		
+		  //filter button
+		ComboBox<String> sortingOrderComboBox = new ComboBox<>();
+	    sortingOrderComboBox.getItems().addAll("Ascending", "Descending");
+	    sortingOrderComboBox.setValue("Descending");
+
+	    sortingOrderComboBox.setOnAction(event -> {
+            filterSorting = sortingOrderComboBox.getValue();
+            // You can perform actions based on the selected option here
+            resetRecord();
+            insertAndSortRecord(filterSorting);
+            printRecord(filterType);
+
+        });
+	    
+	    ComboBox<String> sortingTypeComboBox = new ComboBox<>();
+	    sortingTypeComboBox.getItems().addAll("All", "Outcome", "Income");
+	    sortingTypeComboBox.setValue("All");
+	    
+	    sortingTypeComboBox.setOnAction(event -> {
+            filterType = sortingTypeComboBox.getValue();
+            resetRecord();
+            insertAndSortRecord(filterSorting);
+            printRecord(filterType);
+        });
+        filter.getChildren().addAll(sortingOrderComboBox,sortingTypeComboBox);
+
+        return filter;
+	}
+	
+	
+	public void printRecord(String option) {
+		 //output
+        for(Record item:combinedRecords) {
+        	HBox incomeBox=new HBox(15);
+        	if(option.equals("All")||option.equals("Income")&& item instanceof Income) {
+        		incomeBox.getChildren().addAll(
+            			new Label("(+)"),
+            			new Label(item.getName()),
+            			new Label(item.getTotal().toString()),
+            			new Label(item.getDate())
+            			);
+        		incomeBox.getStyleClass().add("homeIncomeBox");
+            	recordList.getChildren().add(incomeBox);
+        	}else if(option.equals("All")||option.equals("Outcome")&& item instanceof Outcome) {
+        		incomeBox.getChildren().addAll(
+            			new Label("(-)"),
+            			new Label(item.getName()),
+            			new Label(item.getTotal().toString()),
+            			new Label(item.getDate())
+            			);
+        		incomeBox.getStyleClass().add("homeIncomeBox");
+            	recordList.getChildren().add(incomeBox);
+        	}
+            
+        }
+	}
+	
+	public void insertAndSortRecord(String option) {
 		for (Income income : incomeList) {
             combinedRecords.add(income);
         }
@@ -101,15 +163,25 @@ public class HomePage {
             combinedRecords.add(outcome);
         }
         
-        int n = combinedRecords.size();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                Record record1 = combinedRecords.get(j);
-                Record record2 = combinedRecords.get(j + 1);
-                if (record1.getDate().compareTo(record2.getDate()) > 0) {
-                    // Swap the records if they are out of order
-                    combinedRecords.set(j, record2);
-                    combinedRecords.set(j + 1, record1);
+        for (int i = 0; i < combinedRecords.size(); i++) {
+            for (int j = 0; j < combinedRecords.size()- 1; j++) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    Date date1 = dateFormat.parse(combinedRecords.get(j).getDate());
+                    Date date2 = dateFormat.parse(combinedRecords.get(j + 1).getDate());
+
+                    if (option.equals("Descending")&& date1.compareTo(date2) < 0) {
+                        // Swap the records by creating a temporary variable
+                        Record temp = combinedRecords.get(j);
+                        combinedRecords.set(j, combinedRecords.get(j + 1));
+                        combinedRecords.set(j + 1, temp);
+                    } else if(option.equals("Ascending")&& date1.compareTo(date2) > 0) {
+                    	 Record temp = combinedRecords.get(j);
+                         combinedRecords.set(j, combinedRecords.get(j + 1));
+                         combinedRecords.set(j + 1, temp);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }
