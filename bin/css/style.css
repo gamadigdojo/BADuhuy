@@ -2,8 +2,49 @@
 .homeIncomeBox{
      -fx-border-width: 2px;     /* Border width */
      -fx-background-color: white;
- 	-fx-padding: 10px; /* Padding values can be adjusted as needed */
+ 	-fx-padding: 15px; /* Padding values can be adjusted as needed */
+ 	    -fx-border-radius: 6px; /* Border radius for the border, if needed */
+ }
+ 
+ .landingHeading {
+     -fx-font-size: 30px; 
+  
+ }
+ 
+ .btn-outline-success {
+    -fx-background-color: transparent;
+    -fx-text-fill: #28a745;
+    -fx-border-color: #28a745;
 }
+
+ 
+
+.btn-success {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-border-color: #28a745;
+}
+ 
+ .landingDesc {
+     -fx-alignment: center; /* Center the text vertically */
+ 
+ }
+ 
+ .landingParagraph {
+     -fx-font-size: 20px; 
+	 -fx-font-style: italic;
+     
+ }
+ 
+
+ .income{
+    -fx-text-fill: green;
+}
+
+ .outcome{
+    -fx-text-fill: red;
+}
+
 
 .homeHeader {
     -fx-padding:15px;
@@ -59,6 +100,13 @@
     -fx-pref-width: 80%; /* Set the width to 80% */
     -fx-alignment: center; /* Center the content */
     
+}
+
+.consultantName {
+      -fx-font-size:15px;
+}
+.consultant {
+
 }
 
 .row {

@@ -44,7 +44,6 @@ public class HomePage {
      ArrayList<Record> combinedRecords= new ArrayList<>();
  
    
-     
      VBox recordList=new VBox(10); //root center layout
      HBox filter=filterButton();
      String filterSorting="Descending";
@@ -131,27 +130,52 @@ public class HomePage {
 		 //output
         for(Record item:combinedRecords) {
         	HBox incomeBox=new HBox(15);
-        	if(option.equals("All")||option.equals("Income")&& item instanceof Income) {
+        	if(option.equals("All")) {
+        		if(  item instanceof Income) {
+        			Label income=new Label("+"+item.getTotal().toString());
+            		income.getStyleClass().add("income");
+            		incomeBox.getChildren().addAll(
+            				income,
+                			new Label(item.getName()),
+                			new Label(item.getDate())
+                			);
+            		incomeBox.getStyleClass().add("homeIncomeBox");
+                	recordList.getChildren().add(incomeBox);
+            	}else if(item instanceof Outcome) {
+            		Label outcome=new Label("-"+item.getTotal().toString());
+            		outcome.getStyleClass().add("outcome");
+            		incomeBox.getChildren().addAll(
+            				outcome,
+                			new Label(item.getName()),
+                			new Label(item.getDate())
+                			);
+            		incomeBox.getStyleClass().add("homeIncomeBox");
+                	recordList.getChildren().add(incomeBox);
+            	}
+        	}else {
+        	if( option.equals("Income")&& item instanceof Income) {
+    			Label income=new Label("+"+item.getTotal().toString());
+        		income.getStyleClass().add("income");
         		incomeBox.getChildren().addAll(
-            			new Label("(+)"),
+        				income,
             			new Label(item.getName()),
-            			new Label(item.getTotal().toString()),
             			new Label(item.getDate())
             			);
         		incomeBox.getStyleClass().add("homeIncomeBox");
             	recordList.getChildren().add(incomeBox);
-        	}else if(option.equals("All")||option.equals("Outcome")&& item instanceof Outcome) {
+        	}else if(option.equals("Outcome")&& item instanceof Outcome) {
+        		Label outcome=new Label("-"+item.getTotal().toString());
+        		outcome.getStyleClass().add("outcome");
         		incomeBox.getChildren().addAll(
-            			new Label("(-)"),
+        				outcome,
             			new Label(item.getName()),
-            			new Label(item.getTotal().toString()),
             			new Label(item.getDate())
             			);
         		incomeBox.getStyleClass().add("homeIncomeBox");
             	recordList.getChildren().add(incomeBox);
         	}
             
-        }
+        }}
 	}
 	
 	public void insertAndSortRecord(String option) {
