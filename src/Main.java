@@ -31,9 +31,12 @@ public class Main extends Application {
         Scene registerScene=new RegisterView().createRegisterScene();
         
         // Set the initial scene
+<<<<<<< HEAD
         primaryStage.setScene(loginScene);
+=======
+        primaryStage.setScene(registerScene);
+>>>>>>> b4de57265619069db701a973a05372efd478643a
         primaryStage.show();
- 
     }
 
 
