@@ -1,34 +1,31 @@
 package view;
 
-import java.sql.SQLException;
 import model.Record;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+ 
 import java.util.Date;
 import java.util.Locale;
 
 import components.Navbar;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+ 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+ 
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import model.Database;
+ 
 import model.Income;
 import model.Outcome;
 import model.SharedStageHolder;
@@ -36,13 +33,12 @@ import java.text.SimpleDateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
  
+ 
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
  
-
-
 public class HomePage {
- 
 	Button addRecord=new Button("Add record");
 	Label balance=new Label("Balance: 0");
 	 ArrayList<Income> incomeList=Income.retreiveRecord();
@@ -68,7 +64,6 @@ public class HomePage {
 		
 		//create footer
 		HBox footer=createFooter();
-		
 		
 		VBox recordList=new VBox(10); //root center layout
 		recordList.setPadding(new Insets(50, 80, 100, 80));
@@ -128,13 +123,51 @@ public class HomePage {
 	    
 	    Button export=new Button("export data");
 	    export.setOnAction(event -> {
-	    	
+	    	confirmationDialog();
 	    });
         filter.getChildren().addAll(sortingOrderComboBox,sortingTypeComboBox,export);
 
         return filter;
 	}
 	
+	private void confirmationDialog() {
+        Alert confirmationDialog = new Alert(AlertType.WARNING);
+        confirmationDialog.setTitle("Confirmation Dialog");
+        confirmationDialog.setHeaderText("Are you sure you want to export the data?\n"
+        		+ "EXPORTING DATA WILL DELETE ALL YOUR RECORD");
+        
+        // Add OK and Cancel buttons to the dialog
+        ButtonType buttonTypeOK = new ButtonType("OK", ButtonData.OK_DONE);
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+        confirmationDialog.getButtonTypes().setAll(buttonTypeOK, buttonTypeCancel);
+
+        // Show the dialog and wait for the user's response
+        confirmationDialog.showAndWait().ifPresent(response -> {
+            if (response == buttonTypeOK) {
+                // User clicked OK, perform the export
+            	exportToNotepad(combinedRecords,"./output.txt");
+            } else {
+             }
+        });
+    }
+	
+	public  void exportToNotepad(ArrayList<Record> records, String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            // Iterate through the records and write each record to the file
+            for (Record record : records) {
+                writer.write(record.toString() + System.lineSeparator());
+            }
+            System.out.println("Export successful!");
+        } catch (IOException e) {
+            System.err.println("Error exporting records: " + e.getMessage());
+        }
+        
+        Income.deleteAllRecords();
+        Outcome.deleteAllRecords();
+        moveAddRecord();
+    }
+	
+	 
 	
 	public void printRecord(String option, VBox recordList) {
 	    for (Record item : combinedRecords) {

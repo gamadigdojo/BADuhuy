@@ -59,6 +59,19 @@ public class Income extends Record{
             System.out.println("Product added successfully!");
         }
 	 }
+	
+	public static void deleteAllRecords() {
+	    String deleteSQL = "DELETE FROM Income";
+
+	    try (PreparedStatement preparedStatement = Database.connection.prepareStatement(deleteSQL)) {
+	        // Execute the delete statement
+	        preparedStatement.executeUpdate();
+
+	        System.out.println("All records deleted successfully!");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	public String getIncomeID() {
 		return IncomeID;
