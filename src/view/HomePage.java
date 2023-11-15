@@ -44,36 +44,35 @@ public class HomePage {
      ArrayList<Record> combinedRecords= new ArrayList<>();
  
    
-     VBox recordList=new VBox(10); //root center layout
-     HBox filter=filterButton();
      String filterSorting="Descending";
      String filterType="All";
  
 	public Scene createHomeScene() {
 		BorderPane root = new BorderPane();
-		VBox scrollRoot=new VBox(); //adding scrollable content
-		ScrollPane scrollContent = new ScrollPane(scrollRoot);
-		scrollContent.setFitToWidth(true); 
+		//add scrollable
+		VBox scrollContent=new VBox(); 
+		ScrollPane scroll = new ScrollPane(scrollContent);
+		scroll.setFitToWidth(true); 
 		
+		//create navbar
 		Navbar navbar = new Navbar();
 		HBox navigationBar = navbar.createNavbar();
-		scrollRoot.getChildren().add(navigationBar);
+		scrollContent.getChildren().add(navigationBar);
 		
+		//create footer
 		HBox footer=createFooter();
-	    recordList.setPadding(new Insets(50, 80, 100, 80));
 		
 		
-
-      
-        resetRecord();
-        insertAndSortRecord("Descending");
-        printRecord("All");
-        scrollRoot.getChildren().add(recordList);
-        
-      
+		VBox recordList=new VBox(10); //root center layout
+		recordList.setPadding(new Insets(50, 80, 100, 80));
+		HBox filter=filterButton(recordList);
+        resetRecord(recordList,filter);
+        insertAndSortRecord(filterSorting);
+        printRecord(filterType,recordList);
+        scrollContent.getChildren().add(recordList);
         
         //----------------SETUP-----------------//
-        root.setCenter(scrollContent);
+        root.setCenter(scroll);
         root.setBottom(footer);
         
         //add external css
@@ -83,7 +82,7 @@ public class HomePage {
     }
 	
 	
-	public void resetRecord() {
+	public void resetRecord(VBox recordList,HBox filter) {
 
 	     HBox header=createHeader();
 	     
@@ -93,7 +92,7 @@ public class HomePage {
         recordList.getChildren().add(filter);
 	}
 	
-	public HBox filterButton() {
+	public HBox filterButton(VBox recordList) {
 		HBox filter=new HBox();
 		
 		  //filter button
@@ -104,9 +103,9 @@ public class HomePage {
 	    sortingOrderComboBox.setOnAction(event -> {
             filterSorting = sortingOrderComboBox.getValue();
             // You can perform actions based on the selected option here
-            resetRecord();
+            resetRecord(recordList,filter);
             insertAndSortRecord(filterSorting);
-            printRecord(filterType);
+            printRecord(filterType,recordList);
 
         });
 	    
@@ -116,9 +115,9 @@ public class HomePage {
 	    
 	    sortingTypeComboBox.setOnAction(event -> {
             filterType = sortingTypeComboBox.getValue();
-            resetRecord();
+            resetRecord(recordList,filter);
             insertAndSortRecord(filterSorting);
-            printRecord(filterType);
+            printRecord(filterType,recordList);
         });
         filter.getChildren().addAll(sortingOrderComboBox,sortingTypeComboBox);
 
@@ -126,12 +125,12 @@ public class HomePage {
 	}
 	
 	
-	public void printRecord(String option) {
+	public void printRecord(String option,VBox recordList) {
 		 //output
         for(Record item:combinedRecords) {
         	HBox incomeBox=new HBox(15);
         	if(option.equals("All")) {
-        		if(  item instanceof Income) {
+        		if(item instanceof Income) {
         			Label income=new Label("+"+item.getTotal().toString());
             		income.getStyleClass().add("income");
             		incomeBox.getChildren().addAll(
