@@ -26,12 +26,12 @@ public class Main extends Application {
         Database.connect();
 
         // Create initial scene
-        Scene HomePage = new HomePageView().createHomeScene();
+//        Scene HomePage = new HomePageView().createHomeScene();
         Scene loginScene=new LoginView().createLoginScene();
         Scene registerScene=new RegisterView().createRegisterScene();
         
         // Set the initial scene
-        primaryStage.setScene(HomePage);
+        primaryStage.setScene(loginScene);
         primaryStage.show();
  
     }
