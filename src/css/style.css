@@ -39,7 +39,8 @@
 
  .income{
     -fx-text-fill: green;
-}
+    
+ }
 
  .outcome{
     -fx-text-fill: red;

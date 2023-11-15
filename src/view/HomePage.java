@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
 
 import components.Navbar;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -32,7 +33,12 @@ import model.Income;
 import model.Outcome;
 import model.SharedStageHolder;
 import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
+ 
+import java.io.FileOutputStream;
+import java.io.IOException;
+ 
 
 
 public class HomePage {
@@ -42,8 +48,9 @@ public class HomePage {
 	 ArrayList<Income> incomeList=Income.retreiveRecord();
      ArrayList<Outcome> outcomeList=Outcome.retreiveRecord();    
      ArrayList<Record> combinedRecords= new ArrayList<>();
- 
-   
+     SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", new Locale("en"));
+
+     
      String filterSorting="Descending";
      String filterType="All";
  
@@ -83,7 +90,6 @@ public class HomePage {
 	
 	
 	public void resetRecord(VBox recordList,HBox filter) {
-
 	     HBox header=createHeader();
 	     
 	    combinedRecords.clear();
@@ -119,96 +125,73 @@ public class HomePage {
             insertAndSortRecord(filterSorting);
             printRecord(filterType,recordList);
         });
-        filter.getChildren().addAll(sortingOrderComboBox,sortingTypeComboBox);
+	    
+	    Button export=new Button("export data");
+	    export.setOnAction(event -> {
+	    	
+	    });
+        filter.getChildren().addAll(sortingOrderComboBox,sortingTypeComboBox,export);
 
         return filter;
 	}
 	
 	
-	public void printRecord(String option,VBox recordList) {
-		 //output
-        for(Record item:combinedRecords) {
-        	HBox incomeBox=new HBox(15);
-        	if(option.equals("All")) {
-        		if(item instanceof Income) {
-        			Label income=new Label("+"+item.getTotal().toString());
-            		income.getStyleClass().add("income");
-            		incomeBox.getChildren().addAll(
-            				income,
-                			new Label(item.getName()),
-                			new Label(item.getDate())
-                			);
-            		incomeBox.getStyleClass().add("homeIncomeBox");
-                	recordList.getChildren().add(incomeBox);
-            	}else if(item instanceof Outcome) {
-            		Label outcome=new Label("-"+item.getTotal().toString());
-            		outcome.getStyleClass().add("outcome");
-            		incomeBox.getChildren().addAll(
-            				outcome,
-                			new Label(item.getName()),
-                			new Label(item.getDate())
-                			);
-            		incomeBox.getStyleClass().add("homeIncomeBox");
-                	recordList.getChildren().add(incomeBox);
-            	}
-        	}else {
-        	if( option.equals("Income")&& item instanceof Income) {
-    			Label income=new Label("+"+item.getTotal().toString());
-        		income.getStyleClass().add("income");
-        		incomeBox.getChildren().addAll(
-        				income,
-            			new Label(item.getName()),
-            			new Label(item.getDate())
-            			);
-        		incomeBox.getStyleClass().add("homeIncomeBox");
-            	recordList.getChildren().add(incomeBox);
-        	}else if(option.equals("Outcome")&& item instanceof Outcome) {
-        		Label outcome=new Label("-"+item.getTotal().toString());
-        		outcome.getStyleClass().add("outcome");
-        		incomeBox.getChildren().addAll(
-        				outcome,
-            			new Label(item.getName()),
-            			new Label(item.getDate())
-            			);
-        		incomeBox.getStyleClass().add("homeIncomeBox");
-            	recordList.getChildren().add(incomeBox);
-        	}
-            
-        }}
+	public void printRecord(String option, VBox recordList) {
+	    for (Record item : combinedRecords) {
+	        HBox incomeBox = new HBox(15);
+
+	        if ((option.equals("All") || option.equals("Income")) && item instanceof Income) {
+	            int boxLength = 92 - item.getName().length();
+	            Label income = new Label(String.format("%-15s %-"+boxLength+"s %s",
+	                    "+ Rp." + formatNumber( item.getTotal() ),
+	                    item.getName(),
+	                    item.getDate()));
+	            income.getStyleClass().add("income");
+	            incomeBox.getChildren().add(income);
+	            incomeBox.getStyleClass().add("homeIncomeBox");
+	            recordList.getChildren().add(incomeBox);
+	        } else if ((option.equals("All") || option.equals("Outcome")) && item instanceof Outcome) {
+	            int boxLength = 95 - item.getName().length();
+	            Label outcome = new Label(String.format("%-15s %-"+boxLength+"s %s",
+	                    "- Rp." + formatNumber( item.getTotal()),
+	                    item.getName(),
+	                    item.getDate()));
+
+	            outcome.getStyleClass().add("outcome");
+	            incomeBox.getChildren().add(outcome);
+	            incomeBox.getStyleClass().add("homeIncomeBox");
+	            recordList.getChildren().add(incomeBox);
+	        }
+	    }
 	}
 	
 	public void insertAndSortRecord(String option) {
-		for (Income income : incomeList) {
-            combinedRecords.add(income);
-        }
+	    combinedRecords.addAll(incomeList);
+	    combinedRecords.addAll(outcomeList);
 
-        for (Outcome outcome : outcomeList) {
-            combinedRecords.add(outcome);
-        }
-        
-        for (int i = 0; i < combinedRecords.size(); i++) {
-            for (int j = 0; j < combinedRecords.size()- 1; j++) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                try {
-                    Date date1 = dateFormat.parse(combinedRecords.get(j).getDate());
-                    Date date2 = dateFormat.parse(combinedRecords.get(j + 1).getDate());
+	    //satu
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", new Locale("en"));
 
-                    if (option.equals("Descending")&& date1.compareTo(date2) < 0) {
-                        // Swap the records by creating a temporary variable
-                        Record temp = combinedRecords.get(j);
-                        combinedRecords.set(j, combinedRecords.get(j + 1));
-                        combinedRecords.set(j + 1, temp);
-                    } else if(option.equals("Ascending")&& date1.compareTo(date2) > 0) {
-                    	 Record temp = combinedRecords.get(j);
-                         combinedRecords.set(j, combinedRecords.get(j + 1));
-                         combinedRecords.set(j + 1, temp);
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+	    for (int i = 0; i < combinedRecords.size(); i++) {
+	        for (int j = 0; j < combinedRecords.size() - 1; j++) {
+	            try {
+	                Date date1 = dateFormat.parse(combinedRecords.get(j).getDate());
+	                Date date2 = dateFormat.parse(combinedRecords.get(j + 1).getDate());
+
+	                if ((option.equals("Descending") && date1.compareTo(date2) < 0)
+	                        || (option.equals("Ascending") && date1.compareTo(date2) > 0)) {
+	                    // Swap the records by creating a temporary variable
+	                    Record temp = combinedRecords.get(j);
+	                    combinedRecords.set(j, combinedRecords.get(j + 1));
+	                    combinedRecords.set(j + 1, temp);
+	                }
+	            } catch (ParseException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	}
+
 	
 	public HBox createFooter(){
 		  HBox footer=new HBox(); //root balance& addrecord
@@ -244,6 +227,11 @@ public class HomePage {
 	        return header;
 	    }
 	
+	 private  String formatNumber(double value) {
+	        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+	        return numberFormat.format(value);
+	    }
+	 
 	void moveAddRecord() {
 		Scene AddRecordScene = new AddRecord().createAddScene();
         SharedStageHolder.getPrimaryStage().setScene(AddRecordScene);

@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import components.Navbar;
 import javafx.application.Application;
@@ -14,6 +15,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -40,7 +42,7 @@ public class AddRecord {
     DatePicker datePicker = new DatePicker();
 
     // Define a custom date format using DateTimeFormatter
-    DateTimeFormatter customDateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter customDateFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
 
     public AddRecord() {
       
@@ -63,7 +65,17 @@ public class AddRecord {
     	comboBox.setValue("Income");
     	
         datePicker.setValue(LocalDate.now());
-    	
+        
+        
+        TextFormatter<Object> priceFormatter = new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches("\\d*")) {
+                // Allow only numeric input
+                return change;
+            }
+            return null; // Disallow non-numeric input
+        });
+
+        fieldPrice.setTextFormatter(priceFormatter);
     	VBox inputBox = new VBox(10); // 10 is the spacing between elements
     	inputBox.getChildren().addAll(
     			comboBox,labelName, fieldName, labelPrice, fieldPrice,labelDate,datePicker
@@ -97,11 +109,39 @@ public class AddRecord {
 	
 
 void insertProduct() throws SQLException {
-	
 	LocalDate selectedDate = datePicker.getValue();
 	String name = fieldName.getText();
-    double total = Double.parseDouble(fieldPrice.getText());
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); 
+    double total;
+    
+    if (selectedDate == null || name == null || name.trim().isEmpty()) {
+        System.out.println("Selected date and name cannot be null or empty.");
+        return;  
+    }
+    
+    try {
+        total =Double.parseDouble(fieldPrice.getText());
+    } catch (NumberFormatException e) {
+        System.out.println("Total must be a valid number.");
+        return; // Abort further processing
+    }
+    
+    if(total <=1000) {
+    	System.out.println("total cannot be less than 1000");
+    	return;
+    }
+    
+    if (name.length() > 95) {
+        System.out.println("Name is too long. Maximum length is 95 characters.");
+         return;  
+    }
+    
+    LocalDate now = LocalDate.now();
+    if (selectedDate.isAfter(now)) {
+        // Handle the error, e.g., show a message to the user
+        System.out.println("Selected date cannot be after the current date.");
+         return; // Abort further processing
+    }
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en")); 
     String formattedDate = selectedDate.format(dateFormatter);
 	
 	 String type=comboBox.getValue();
@@ -110,11 +150,18 @@ void insertProduct() throws SQLException {
 	    }else if(type.equals("Outcome")) {
 	    	Outcome.insertRecord(name, total, formattedDate);
 	    }
+	    
+
+ 
 	
     fieldName.clear();
     datePicker.setValue(LocalDate.now());
     fieldPrice.clear();    
     
+    backHome();
+}
+
+void backHome() {
 	Scene HomePageScene= new HomePage().createHomeScene();
     SharedStageHolder.getPrimaryStage().setScene(HomePageScene);
 }
