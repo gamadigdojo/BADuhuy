@@ -1,3 +1,6 @@
-Name: Gajian anjay, Total: 10000.00, Date: 15 November 2023
-Name: Pengeluaran bulan ini, Total: 15000.00, Date: 15 November 2023
-Name: beli gorengan, Total: 20000.00, Date: 15 November 2023
+Name: Testing, Total: 5000.00, Date: 16 November 2023
+Name: ASiapkan dapat uang , Total: 500000.00, Date: 16 November 2023
+Name: dapat, Total: 50000.00, Date: 16 November 2023
+Name: Testingasd123, Total: 40000.00, Date: 16 November 2023
+Name: bayar uang makan, Total: 100000.00, Date: 16 November 2023
+Name: gajian orang tua, Total: 50000.00, Date: 08 November 2023

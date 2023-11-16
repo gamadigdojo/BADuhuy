@@ -175,7 +175,8 @@ public class HomePage {
 
 	        if ((option.equals("All") || option.equals("Income")) && item instanceof Income) {
 	            int boxLength = 92 - item.getName().length();
-	            Label income = new Label(String.format("%-15s %-"+boxLength+"s %s",
+	            int totalLength= 20 - item.getTotal().toString().length();
+	            Label income = new Label(String.format("%-"+totalLength+"s %-"+boxLength+"s %s",
 	                    "+ Rp." + formatNumber( item.getTotal() ),
 	                    item.getName(),
 	                    item.getDate()));
@@ -185,7 +186,8 @@ public class HomePage {
 	            recordList.getChildren().add(incomeBox);
 	        } else if ((option.equals("All") || option.equals("Outcome")) && item instanceof Outcome) {
 	            int boxLength = 95 - item.getName().length();
-	            Label outcome = new Label(String.format("%-15s %-"+boxLength+"s %s",
+	            int totalLength= 20 - item.getTotal().toString().length();
+	            Label outcome = new Label(String.format("%-"+totalLength+"s %-"+boxLength+"s %s",
 	                    "- Rp." + formatNumber( item.getTotal()),
 	                    item.getName(),
 	                    item.getDate()));
