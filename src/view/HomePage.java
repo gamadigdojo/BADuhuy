@@ -1,5 +1,6 @@
 package view;
 
+
 import model.Record;
 import java.util.ArrayList;
  
@@ -9,6 +10,7 @@ import java.util.Locale;
 import components.Navbar;
  
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -25,7 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
- 
+import javafx.stage.Stage;
 import model.Income;
 import model.Outcome;
 import model.SharedStageHolder;
@@ -39,8 +41,9 @@ import java.io.FileWriter;
 import java.io.IOException;
  
 public class HomePage {
-	Button addRecord=new Button("Add record");
-	Label balance=new Label("Balance: 0");
+    private Stage primaryStage;
+
+	
 	 ArrayList<Income> incomeList=Income.retreiveRecord();
      ArrayList<Outcome> outcomeList=Outcome.retreiveRecord();    
      ArrayList<Record> combinedRecords= new ArrayList<>();
@@ -49,38 +52,41 @@ public class HomePage {
      
      String filterSorting="Descending";
      String filterType="All";
+     
+     public HomePage(Stage primaryStage){
+    	 this.primaryStage=primaryStage;
+     }
  
-	public Scene createHomeScene() {
+	public void show() {
 		BorderPane root = new BorderPane();
-		//add scrollable
 		VBox scrollContent=new VBox(); 
 		ScrollPane scroll = new ScrollPane(scrollContent);
 		scroll.setFitToWidth(true); 
-		
-		//create navbar
-		Navbar navbar = new Navbar();
+		Navbar navbar = new Navbar(primaryStage);
 		HBox navigationBar = navbar.createNavbar();
 		scrollContent.getChildren().add(navigationBar);
+		VBox container = new VBox();
+		container.getStyleClass().add("container");
+
 		
 		//create footer
 		HBox footer=createFooter();
 		
 		VBox recordList=new VBox(10); //root center layout
-		recordList.setPadding(new Insets(50, 80, 100, 80));
-		HBox filter=filterButton(recordList);
+ 		HBox filter=filterButton(recordList);
         resetRecord(recordList,filter);
         insertAndSortRecord(filterSorting);
         printRecord(filterType,recordList);
-        scrollContent.getChildren().add(recordList);
         
-        //----------------SETUP-----------------//
+        
+        container.getChildren().add(recordList);        
+        scrollContent.getChildren().add(container);
         root.setCenter(scroll);
         root.setBottom(footer);
-        
-        //add external css
         Scene scene = new Scene(root, 700, 500);
         scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
-        return scene;
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 	
 	
@@ -94,9 +100,9 @@ public class HomePage {
 	}
 	
 	public HBox filterButton(VBox recordList) {
-		HBox filter=new HBox();
+		HBox filter=new HBox(255);
 		
-		  //filter button
+		HBox sorting=new HBox(3);
 		ComboBox<String> sortingOrderComboBox = new ComboBox<>();
 	    sortingOrderComboBox.getItems().addAll("Ascending", "Descending");
 	    sortingOrderComboBox.setValue("Descending");
@@ -109,6 +115,7 @@ public class HomePage {
             printRecord(filterType,recordList);
 
         });
+	    sortingOrderComboBox.getStyleClass().addAll("btn","btn-outline","btn-sm","btn-round-sm");
 	    
 	    ComboBox<String> sortingTypeComboBox = new ComboBox<>();
 	    sortingTypeComboBox.getItems().addAll("All", "Outcome", "Income");
@@ -120,12 +127,17 @@ public class HomePage {
             insertAndSortRecord(filterSorting);
             printRecord(filterType,recordList);
         });
+	    sortingTypeComboBox.getStyleClass().addAll("btn","btn-outline","btn-sm","btn-round-sm");
+
 	    
 	    Button export=new Button("export data");
 	    export.setOnAction(event -> {
 	    	confirmationDialog();
 	    });
-        filter.getChildren().addAll(sortingOrderComboBox,sortingTypeComboBox,export);
+	    export.getStyleClass().addAll("btn","btn-sm","btn-outline","btn-round-sm");
+
+	    sorting.getChildren().addAll(sortingOrderComboBox,sortingTypeComboBox);
+	    filter.getChildren().addAll(sorting,export);
 
         return filter;
 	}
@@ -170,30 +182,36 @@ public class HomePage {
 	 
 	
 	public void printRecord(String option, VBox recordList) {
+		 Image incomeImg = new Image("/images/income.png"); 
+	        ImageView incomeImage = new ImageView(incomeImg);
+	        incomeImage.setFitWidth(20); 
+	        incomeImage.setFitHeight(20);
+	        
+	        Image outcomeImg = new Image("/images/outcome.png"); 
+	        ImageView outcomeImage = new ImageView(outcomeImg);
+	        outcomeImage.setFitWidth(20); // Set the desired width
+	        outcomeImage.setFitHeight(20);
+	        
 	    for (Record item : combinedRecords) {
 	        HBox incomeBox = new HBox(15);
 
 	        if ((option.equals("All") || option.equals("Income")) && item instanceof Income) {
 	            int boxLength = 92 - item.getName().length();
-	            int totalLength= 20 - item.getTotal().toString().length();
-	            Label income = new Label(String.format("%-"+totalLength+"s %-"+boxLength+"s %s",
+ 	            Label income = new Label(String.format("%-20s %-"+boxLength+"s %s",
 	                    "+ Rp." + formatNumber( item.getTotal() ),
 	                    item.getName(),
 	                    item.getDate()));
-	            income.getStyleClass().add("income");
-	            incomeBox.getChildren().add(income);
+	            incomeBox.getChildren().addAll(incomeImage,income);
 	            incomeBox.getStyleClass().add("homeIncomeBox");
 	            recordList.getChildren().add(incomeBox);
 	        } else if ((option.equals("All") || option.equals("Outcome")) && item instanceof Outcome) {
 	            int boxLength = 95 - item.getName().length();
-	            int totalLength= 20 - item.getTotal().toString().length();
-	            Label outcome = new Label(String.format("%-"+totalLength+"s %-"+boxLength+"s %s",
+	            Label outcome = new Label(String.format("%-20s %-"+boxLength+"s %s",
 	                    "- Rp." + formatNumber( item.getTotal()),
 	                    item.getName(),
 	                    item.getDate()));
 
-	            outcome.getStyleClass().add("outcome");
-	            incomeBox.getChildren().add(outcome);
+	            incomeBox.getChildren().addAll(outcomeImage,outcome);
 	            incomeBox.getStyleClass().add("homeIncomeBox");
 	            recordList.getChildren().add(incomeBox);
 	        }
@@ -229,7 +247,10 @@ public class HomePage {
 
 	
 	public HBox createFooter(){
-		  HBox footer=new HBox(); //root balance& addrecord
+		  HBox footer=new HBox(0); //root balance& addrecord
+		  Button addRecord=new Button("Add record");
+		  Label balance=new Label("Balance: 0");
+			
 	        addRecord.setOnAction(event-> {
 	        	moveAddRecord();
 	    	});
@@ -242,20 +263,15 @@ public class HomePage {
 	}
 	
 	 public HBox createHeader() {
-		  HBox header = new HBox();  //root header box
+		    HBox header = new HBox();  //root header box
 	        VBox goalBar=new VBox();  
 	        TextField inputBar = new TextField();
-	        inputBar.getStyleClass().add("goalInput");
-	        goalBar.getChildren().addAll(new Label("What is your main goal in using Piggy Pocket?"), inputBar);
+	        goalBar.getChildren().addAll(new Label("Search income/outcome name"), inputBar);
 	        goalBar.getStyleClass().add("goalBar");      
-	        Image image = new Image("/images/logo.png"); // Adjust the path to your image.
-	        ImageView imageView = new ImageView(image);
-	        imageView.setFitWidth(100); // Set the desired width
-	        imageView.setFitHeight(100); // Set the desired height
 	        HBox.setHgrow(goalBar, javafx.scene.layout.Priority.ALWAYS);
 	        
-	        header.getChildren().addAll(imageView,goalBar); 
-	        header.getStyleClass().add("homeHeader"); //adding style to header
+ 	        header.getChildren().addAll(goalBar); 
+	        header.getStyleClass().add("header"); //adding style to header
 	        
 
 
@@ -268,7 +284,6 @@ public class HomePage {
 	    }
 	 
 	void moveAddRecord() {
-		Scene AddRecordScene = new AddRecord().createAddScene();
-        SharedStageHolder.getPrimaryStage().setScene(AddRecordScene);
+		new AddRecord(primaryStage).show();
 	}
 }

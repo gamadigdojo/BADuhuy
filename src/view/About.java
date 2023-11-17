@@ -8,17 +8,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class About {
+	private Stage primaryStage;
 
-	public About() {
+	public About(Stage primaryStage) {
 		// TODO Auto-generated constructor stub
+		this.primaryStage=primaryStage;
 	}
 	
-	public Scene createAboutScene() {
+	public void show() {
 		BorderPane root = new BorderPane();
-		Navbar navbar = new Navbar();
+		Navbar navbar = new Navbar(primaryStage);
 		HBox navigationBar = navbar.createNavbar();
+		VBox container = new VBox();
+		container.getStyleClass().add("container");
+
 		
 		VBox content=new VBox();
 		 Image image = new Image("/images/logo.png"); // Adjust the path to your image.
@@ -34,18 +40,18 @@ public class About {
         	);
 		content.getChildren().addAll(heading,imageView,paragraph);
 		content.getStyleClass().add("aboutVBox");
-
 		
 
-
-
-
+		
+        container.getChildren().add(content);
 		root.setTop(navigationBar);
-		root.setCenter(content);
+		root.setCenter(container);
         //add external css
         Scene scene = new Scene(root, 700, 500);
         scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
-        return scene;
+        
+        primaryStage.setScene(scene);
+        primaryStage.show();
 	}
 
 }

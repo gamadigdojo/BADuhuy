@@ -1,5 +1,6 @@
 import model.Database;
 import model.SharedStageHolder;
+import view.About;
 import view.AddRecord;
 import view.HomePage;
 import view.LandingPage;
@@ -25,17 +26,12 @@ public class Main extends Application {
         SharedStageHolder.setPrimaryStage(primaryStage); // Set the primary stage
         primaryStage.setTitle("JavaFX Shared Variable Example");
         Database.connect();
-
-        // Create initial scene
-        Scene HomePage = new HomePage().createHomeScene();
-        Scene loginScene=new Login().createLoginScene();
-        Scene registerScene=new Register().createRegisterScene();
-        Scene LandingScene=new LandingPage().createLandingScene();
         
-        // Set the initial scene
-        primaryStage.setScene(HomePage);
-        primaryStage.show();
- 
+        
+        primaryStage.setResizable(false);
+        
+        
+        new LandingPage(primaryStage).show();
     }
 
 

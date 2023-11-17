@@ -9,20 +9,25 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class Consultant {
 
-	public Consultant() {
+	private Stage primaryStage;
+	public Consultant(Stage primaryStage) {
 		// TODO Auto-generated constructor stub
+		this.primaryStage=primaryStage;
 	}
 	
-	public Scene createConsultantScene() {
+	public void show() {
 		BorderPane root = new BorderPane();
-		Navbar navbar = new Navbar();
+		Navbar navbar = new Navbar(primaryStage);
 		HBox navigationBar = navbar.createNavbar();
+		VBox container = new VBox();
+		container.getStyleClass().add("container");
+
 		
 		VBox rows=new VBox(15);
-		 rows.setPadding(new Insets(50, 80, 100, 80));
 		HBox john=createConsultant("/images/consultant1.png","Elisabeth","available at 09.00","0838951231");
 		HBox kevin=createConsultant("/images/consultant2.png","Emilia","available at 09.00","08388019231");
 		HBox maria=createConsultant("images/consultant3.png","Kevin","available at 10.00","08389968869");
@@ -31,13 +36,15 @@ public class Consultant {
 		rows.getChildren().addAll(john,kevin,maria);
 		 
 
-		root.setTop(navigationBar);
-		root.setCenter(rows);
+		container.getChildren().add(rows);
 		
-        //add external css
+		root.setTop(navigationBar);
+		
+		root.setCenter(container);
         Scene scene = new Scene(root, 700, 500);
         scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
-        return scene;
+        primaryStage.setScene(scene);
+        primaryStage.show();
 	}
 	
 	HBox createConsultant(String picture,String name,String description,String contact) {

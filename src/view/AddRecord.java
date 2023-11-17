@@ -44,29 +44,23 @@ public class AddRecord {
     // Define a custom date format using DateTimeFormatter
     DateTimeFormatter customDateFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
 
-    public AddRecord() {
-      
+    private Stage primaryStage;
+    public AddRecord(Stage primaryStage) {
+      this.primaryStage=primaryStage;
 	}
 	 
-	public Scene createAddScene() {
+	public void show() {
 		BorderPane root = new BorderPane();
-		Navbar navbar = new Navbar();
-		HBox navigationBar = navbar.createNavbar();
-
-
-
-		root.setTop(navigationBar);
+		Navbar navbar = new Navbar(primaryStage);
+		HBox navigationBar = navbar.createNavbar();		
+ 		VBox container = new VBox();
+		container.getStyleClass().add("container");
         
-        //------------------CENTER LAYOUT-----------------//
-        VBox display = new VBox(10); //center layout root
-        
+        VBox display = new VBox(10);  
         Label labelDescription = new Label("Enter Note Income/Outcome:");
     	comboBox.getItems().addAll("Income", "Outcome");
     	comboBox.setValue("Income");
-    	
         datePicker.setValue(LocalDate.now());
-        
-        
         TextFormatter<Object> priceFormatter = new TextFormatter<>(change -> {
             if (change.getControlNewText().matches("\\d*")) {
                 // Allow only numeric input
@@ -74,7 +68,6 @@ public class AddRecord {
             }
             return null; // Disallow non-numeric input
         });
-
         fieldPrice.setTextFormatter(priceFormatter);
     	VBox inputBox = new VBox(10); // 10 is the spacing between elements
     	inputBox.getChildren().addAll(
@@ -94,18 +87,17 @@ public class AddRecord {
     	    inputBox,
     	    addButton
     	);
-    	
-    	 
-       
-    	
     	display.getStyleClass().add("addRecordDisplay"); //adding style
 
-    	//-----------------------------SETUP------------------------------
+
+        container.getChildren().add(display);
+    	root.setTop(navigationBar);
     	Scene scene = new Scene(root, 700, 500);
-        root.setCenter(display);
+        root.setCenter(container);
         scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
-        return scene;
-	}
+        primaryStage.setScene(scene);
+        primaryStage.show();
+  	}
 	
 
 void insertProduct() throws SQLException {
@@ -162,8 +154,9 @@ void insertProduct() throws SQLException {
 }
 
 void backHome() {
-	Scene HomePageScene= new HomePage().createHomeScene();
-    SharedStageHolder.getPrimaryStage().setScene(HomePageScene);
+	//Scene HomePageScene= new HomePage().createHomeScene();
+    //SharedStageHolder.getPrimaryStage().setScene(HomePageScene);
+	new HomePage(primaryStage).show();
 }
 
 }

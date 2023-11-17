@@ -1,6 +1,3 @@
-Name: Testing, Total: 5000.00, Date: 16 November 2023
-Name: ASiapkan dapat uang , Total: 500000.00, Date: 16 November 2023
-Name: dapat, Total: 50000.00, Date: 16 November 2023
-Name: Testingasd123, Total: 40000.00, Date: 16 November 2023
-Name: bayar uang makan, Total: 100000.00, Date: 16 November 2023
-Name: gajian orang tua, Total: 50000.00, Date: 08 November 2023
+Name: ASIAP, Total: 500000.00, Date: 17 November 2023
+Name: pengeluaran makan, Total: 40000.00, Date: 17 November 2023
+Name: test, Total: 50000.00, Date: 16 November 2023

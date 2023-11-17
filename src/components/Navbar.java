@@ -6,52 +6,62 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 import model.SharedStageHolder;
 import view.AddRecord;
 import view.Consultant;
 import view.HomePage;
+import view.LandingPage;
 import view.Login;
 import view.About;
 
 
 public class Navbar {
 
-	public Navbar() {
+	private Stage primaryStage;
+	public Navbar(Stage primaryStage) {
 		// TODO Auto-generated constructor stub
+		this.primaryStage=primaryStage;
 	}
 	
 	 public HBox createNavbar() {
-	        HBox navbar = new HBox();
+	        HBox navbar = new HBox(298);
 	        
-	        // Add navigation elements to the navbar
+	        HBox left=new HBox(5);
 	        Image image = new Image("/images/logo.png"); // Adjust the path to your image.
 	        ImageView imageView = new ImageView(image);
 	        imageView.setFitWidth(50); // Set the desired width
 	        imageView.setFitHeight(50);
+	        imageView.setOnMouseClicked(event -> {
+	        	new LandingPage(primaryStage).show();
+	        });
 	        Button homeButton = new Button("Home");
 	        homeButton.setOnAction(event-> {
-	        	Scene HomeScene = new HomePage().createHomeScene();
-		        SharedStageHolder.getPrimaryStage().setScene(HomeScene);
+	          new HomePage(primaryStage).show();
 	    	});
 	        Button aboutButton = new Button("About");
 	        aboutButton.setOnAction(event-> {
-	        	Scene AboutScene= new About().createAboutScene();
-		        SharedStageHolder.getPrimaryStage().setScene(AboutScene);
+	        	new About(primaryStage).show();
 	    	});
 	        Button consultantButton = new Button("Consultant");
 	        consultantButton.setOnAction(event-> {
-	        	Scene ConsultantScene= new Consultant().createConsultantScene();
-		        SharedStageHolder.getPrimaryStage().setScene(ConsultantScene);
+	        	new Consultant(primaryStage).show();
 	    	});
 	        
-	        navbar.getChildren().addAll(imageView,homeButton, aboutButton, consultantButton);
+	        left.getChildren().addAll(imageView,homeButton, aboutButton, consultantButton);
 	        Button loginButton = new Button("Login");
 	        loginButton.setOnAction(event-> {
-	        	Scene loginScene = new Login().createLoginScene();
-		        SharedStageHolder.getPrimaryStage().setScene(loginScene);
+	        	new Login(primaryStage).show();
 	    	});
+	        loginButton.getStyleClass().add("btn-round-sm");
+ 	        loginButton.setStyle(
+	        	"-fx-border-color: #2e7d32;" +
+	        	"-fx-background-color: green;"+
+	        	"-fx-text-fill: white;  "
+	        		);
 
-	        navbar.getChildren().add(loginButton);	         
+
+	        navbar.getChildren().addAll(left,loginButton);	         
 	        navbar.getStyleClass().add("navbar");
 
 	        return navbar;

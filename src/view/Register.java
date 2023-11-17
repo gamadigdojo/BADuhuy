@@ -3,13 +3,19 @@ package view;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Database;
 
@@ -23,63 +29,161 @@ public class Register {
     private PasswordField passwordField = new PasswordField();
     private Label errorLabel = new Label();
 
-    public Register() {
+    public Register(Stage primaryStage) {
+    	this.primaryStage=primaryStage;
     }
 
-    public Scene createRegisterScene() {
-		BorderPane root = new BorderPane();
+   public void show() {
+    BorderPane root = new BorderPane();
+    
+    // Tambahkan ImageView untuk 
+    Image logoImage = new Image("/images/logo.png"); // Ganti dengan path atau URL logo Anda
+    ImageView logoImageView = new ImageView(logoImage);
+    logoImageView.setFitWidth(60); // Sesuaikan lebar logo sesuai kebutuhan
+    logoImageView.setFitHeight(60); // Sesuaikan tinggi logo sesuai kebutuhan
+    logoImageView.setOnMouseClicked(event -> {
+    	new LandingPage(primaryStage).show();
+        // Add your custom actions here
+    });
+    
+    HBox logoBox = new HBox(10, logoImageView);
+    logoBox.setAlignment(Pos.TOP_LEFT); // Letakkan di kiri atas
+    
+    Label registerLabel = new Label("Register your Account");
+    Button registerButton = new Button("Create an account");
+    Label signInLabel = new Label("Already have an Account? ");
+    Label signInButton = new Label (" Sign in");
 
-        VBox register = new VBox(10);
-        Button registerButton = new Button("Register");
-        registerButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-					handleRegistration(event);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
+    registerButton.setOnAction(new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+				handleRegistration(event);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+    });
+    
+    VBox register = new VBox(10);
+    
+    registerButton.getStyleClass().add("btn"); 
+    registerLabel.setStyle(
+            "-fx-font-weight: 800; " +
+            "-fx-font-size: 30px; " +
+            "-fx-text-fill: green;");    
+    emailField.getStyleClass().add("input");
+    
+  
+    
+    errorLabel.setStyle(
+    		"-fx-text-fill: red;"
+    		);
 
-        register.getChildren().addAll(
-            new Label("Nama:"),
-            nameField,
-            new Label("Email:"),
-            emailField,
-            new Label("Password:"),
-            passwordField,
-            errorLabel,
-            registerButton
-        );
+    nameField.getStyleClass().add("input");
+    
+    passwordField.getStyleClass().add("input");
+    
+    signInButton.setStyle(
+            "-fx-text-fill: green; " );
+    
+    emailField.setPromptText("Email");
+    nameField.setPromptText("Name");
+    passwordField.setPromptText("Password");
+    
+    HBox signInBox = new HBox(signInLabel, signInButton);
+    
 
-        //----------------SETUP-----------------//
-        root.setCenter(register);
-        //add external css
-        Scene scene = new Scene(root, 700, 500);
-//        scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
-        return scene;
-    }
+    Rectangle whiteBackground = new Rectangle(500, 300);
+    whiteBackground.setFill(Color.WHITE);
+    whiteBackground.setArcWidth(30);
+    whiteBackground.setArcHeight(30);
+    
+    StackPane stackPane = new StackPane();
+    stackPane.getChildren().addAll(whiteBackground, register);
+    
+    register.setAlignment(Pos.CENTER);  
+    register.setSpacing(10); 
+    signInBox.setAlignment(Pos.CENTER);
+    
 
+
+    register.getChildren().addAll(
+    		 registerLabel,
+             nameField,
+             emailField,
+             passwordField,
+             errorLabel,
+             registerButton,
+             signInBox
+    );
+    
+    root.setStyle(
+    		"-fx-background-image: url('/images/background.png'); " +
+    				"-fx-background-size: cover; " +
+    				"-fx-background-position: center center;");
+
+    //----------------SETUP-----------------//
+    root.setTop(logoBox);
+    root.setTop(logoBox);
+    root.setCenter(stackPane);
+    // Tambahkan CSS eksternal jika diperlukan
+    Scene scene = new Scene(root, 700, 500);
+    scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
+    primaryStage.setScene(scene);
+    primaryStage.show();
+
+   }
+   
     private void handleRegistration(ActionEvent event) throws SQLException {
         String name = nameField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
         
-        if (email.isEmpty() || password.isEmpty() || name.isEmpty()) {
-            errorLabel.setText("Nama, email, dan password harus diisi.");
-            return;
-        }
-
-        // Validasi email harus mengandung karakter "@"
-        if (!email.contains("@")) {
-            errorLabel.setText("Email tidak valid. Harus mengandung karakter '@'.");
-            return;
-        }else {
-        	errorLabel.setText("Berhasil");
-//        	 Validasi email, password, dan nama tidak boleh kosong
-       
+//        if (email.isEmpty() && password.isEmpty() && name.isEmpty()) {
+//            errorLabel.setText("Nama, Email, dan Password harus diisi!");
+//            return;
+//        }
+//        
+//        if (email.isEmpty() && password.isEmpty()) {
+//            errorLabel.setText("Email, dan Password harus diisi!");
+//            return;
+//        }
+//        
+//        if (name.isEmpty() && password.isEmpty()) {
+//            errorLabel.setText("Nama, dan Password harus diisi!");
+//            return;
+//        }
+//        
+//        if (name.isEmpty() && email.isEmpty()) {
+//            errorLabel.setText("Nama, dan Email harus diisi!");
+// 
+//        
+//        if (email.isEmpty()) {
+//            errorLabel.setText("Email harus diisi!");
+//            return;
+//        }
+//        
+//        if (name.isEmpty()) {
+//            errorLabel.setText("Nama harus diisi!");
+//        	 
+//            return;
+//        }
+//        
+//        if (password.isEmpty()) {
+//            errorLabel.setText("Password harus diisi!");
+//            return;
+//        }
+//
+//        // Validasi email harus mengandung karakter "@"
+//        if (!email.contains("@")) {
+//            errorLabel.setText("Email tidak valid. Harus mengandung karakter '@'!");
+//            return;
+//        }else {
+//        	errorLabel.setText("Berhasil");
+////        	 Validasi email, password, dan nama tidak boleh kosong
+//        }
 
         // Simpan data ke database
         String insertSQL = "INSERT INTO User (Name,Email,Password) VALUES (?, ?, ?)";
@@ -95,9 +199,12 @@ public class Register {
 
         // Tampilkan pesan sukses atau alihkan ke halaman lain jika diperlukan
         System.out.println("Registrasi berhasil. Redirect ke halaman lain.");
+        new HomePage(primaryStage).show();
         	
+        }catch (Exception e) {
+        	System.out.println(e);
         }
 
         }
     }
-}
+
