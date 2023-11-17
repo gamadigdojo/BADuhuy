@@ -26,6 +26,7 @@ import model.Database;
 import model.Income;
 import model.Outcome;
 import model.SharedStageHolder;
+import model.User;
 
 public class AddRecord {
  	private ToggleButton toggleButton = new ToggleButton("Add new record");
@@ -45,13 +46,15 @@ public class AddRecord {
     DateTimeFormatter customDateFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("en"));
 
     private Stage primaryStage;
-    public AddRecord(Stage primaryStage) {
+    User userSession;
+    public AddRecord(Stage primaryStage,User userSession) {
       this.primaryStage=primaryStage;
+      this.userSession=userSession;
 	}
 	 
 	public void show() {
 		BorderPane root = new BorderPane();
-		Navbar navbar = new Navbar(primaryStage);
+		Navbar navbar = new Navbar(primaryStage,userSession);
 		HBox navigationBar = navbar.createNavbar();		
  		VBox container = new VBox();
 		container.getStyleClass().add("container");
@@ -156,7 +159,7 @@ void insertProduct() throws SQLException {
 void backHome() {
 	//Scene HomePageScene= new HomePage().createHomeScene();
     //SharedStageHolder.getPrimaryStage().setScene(HomePageScene);
-	new HomePage(primaryStage).show();
+	new HomePage(primaryStage,userSession).show();
 }
 
 }

@@ -174,7 +174,7 @@
 .btn-sm {
     -fx-text-fill: white;  
     -fx-background-color: green;
-    -fx-padding: 5px; 
+    -fx-padding: 4px; 
     -fx-font-weight: normal;
     -fx-min-width: 100px; 
     -fx-font-size: 12px; 

@@ -9,18 +9,21 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.User;
 
 public class About {
 	private Stage primaryStage;
+	User userSession;
 
-	public About(Stage primaryStage) {
+	public About(Stage primaryStage, User userSession) {
 		// TODO Auto-generated constructor stub
 		this.primaryStage=primaryStage;
+		this.userSession=userSession;
 	}
 	
 	public void show() {
 		BorderPane root = new BorderPane();
-		Navbar navbar = new Navbar(primaryStage);
+		Navbar navbar = new Navbar(primaryStage,userSession);
 		HBox navigationBar = navbar.createNavbar();
 		VBox container = new VBox();
 		container.getStyleClass().add("container");

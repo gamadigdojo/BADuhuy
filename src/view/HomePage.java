@@ -31,6 +31,8 @@ import javafx.stage.Stage;
 import model.Income;
 import model.Outcome;
 import model.SharedStageHolder;
+import model.User;
+
 import java.text.SimpleDateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -42,6 +44,7 @@ import java.io.IOException;
  
 public class HomePage {
     private Stage primaryStage;
+    User userSession;
 
 	
 	 ArrayList<Income> incomeList=Income.retreiveRecord();
@@ -53,8 +56,9 @@ public class HomePage {
      String filterSorting="Descending";
      String filterType="All";
      
-     public HomePage(Stage primaryStage){
+     public HomePage(Stage primaryStage,User userSession){
     	 this.primaryStage=primaryStage;
+    	 this.userSession=userSession;
      }
  
 	public void show() {
@@ -62,7 +66,7 @@ public class HomePage {
 		VBox scrollContent=new VBox(); 
 		ScrollPane scroll = new ScrollPane(scrollContent);
 		scroll.setFitToWidth(true); 
-		Navbar navbar = new Navbar(primaryStage);
+		Navbar navbar = new Navbar(primaryStage,userSession);
 		HBox navigationBar = navbar.createNavbar();
 		scrollContent.getChildren().add(navigationBar);
 		VBox container = new VBox();
@@ -273,8 +277,6 @@ public class HomePage {
  	        header.getChildren().addAll(goalBar); 
 	        header.getStyleClass().add("header"); //adding style to header
 	        
-
-
 	        return header;
 	    }
 	
@@ -284,6 +286,6 @@ public class HomePage {
 	    }
 	 
 	void moveAddRecord() {
-		new AddRecord(primaryStage).show();
+		new AddRecord(primaryStage,userSession).show();
 	}
 }

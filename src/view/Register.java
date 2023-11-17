@@ -24,7 +24,8 @@ public class Register {
     private Database db;
     Connection connection;
 
-    private TextField nameField = new TextField();
+    private TextField firstNameField = new TextField();
+    private TextField lastNameField = new TextField();
     private TextField emailField = new TextField();
     private PasswordField passwordField = new PasswordField();
     private Label errorLabel = new Label();
@@ -81,7 +82,8 @@ public class Register {
     		"-fx-text-fill: red;"
     		);
 
-    nameField.getStyleClass().add("input");
+    firstNameField.getStyleClass().add("input");
+    lastNameField.getStyleClass().add("input");
     
     passwordField.getStyleClass().add("input");
     
@@ -89,13 +91,14 @@ public class Register {
             "-fx-text-fill: green; " );
     
     emailField.setPromptText("Email");
-    nameField.setPromptText("Name");
+    firstNameField.setPromptText("First Name");
+    lastNameField.setPromptText("Last Name");
     passwordField.setPromptText("Password");
     
     HBox signInBox = new HBox(signInLabel, signInButton);
     
 
-    Rectangle whiteBackground = new Rectangle(500, 300);
+    Rectangle whiteBackground = new Rectangle(500, 400);
     whiteBackground.setFill(Color.WHITE);
     whiteBackground.setArcWidth(30);
     whiteBackground.setArcHeight(30);
@@ -111,7 +114,8 @@ public class Register {
 
     register.getChildren().addAll(
     		 registerLabel,
-             nameField,
+             firstNameField,
+             lastNameField,
              emailField,
              passwordField,
              errorLabel,
@@ -137,7 +141,8 @@ public class Register {
    }
    
     private void handleRegistration(ActionEvent event) throws SQLException {
-        String name = nameField.getText();
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
         
@@ -186,12 +191,13 @@ public class Register {
 //        }
 
         // Simpan data ke database
-        String insertSQL = "INSERT INTO User (Name,Email,Password) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO MsUser (firstName,lastName,Email,Password) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = Database.connection.prepareStatement(insertSQL)) {
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, email);
-            preparedStatement.setString(3, password);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, password);
 
             // Execute the insert statement
             preparedStatement.executeUpdate();
@@ -199,7 +205,7 @@ public class Register {
 
         // Tampilkan pesan sukses atau alihkan ke halaman lain jika diperlukan
         System.out.println("Registrasi berhasil. Redirect ke halaman lain.");
-        new HomePage(primaryStage).show();
+        new Login(primaryStage).show();
         	
         }catch (Exception e) {
         	System.out.println(e);

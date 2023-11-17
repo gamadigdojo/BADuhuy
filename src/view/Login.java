@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Database;
+import model.User;
 
 public class Login {
     private Stage primaryStage;
@@ -83,7 +84,7 @@ public class Login {
         HBox signUpBox = new HBox(signInLabel, signUpButton);
         
 
-        Rectangle whiteBackground = new Rectangle(500, 300);
+        Rectangle whiteBackground = new Rectangle(500, 400);
         whiteBackground.setFill(Color.WHITE);
         whiteBackground.setArcWidth(30);
         whiteBackground.setArcHeight(30);
@@ -147,27 +148,18 @@ public class Login {
             errorLabel.setText("Email tidak valid. Harus mengandung karakter '@'!");
             return;
         }
-//        klo password salah
-//        if(!.isEmpty()) {
-//        	errorLabel.setText("Email harus diisi!");
-//            return;
-//        }
-
-     
         
-        else {
-        	System.out.println("Login Berhasil");
+        User userSession;
+        userSession=User.validateUser(email, password);
+        
+        if(userSession == null) {
+        	errorLabel.setText("User tidak ditemukan");
+        	return;
+        }else {
+        	new HomePage(primaryStage,userSession).show();
         }
 
-        // Lakukan pengecekan dengan data yang ada di database
-//        boolean validUser = validateUser(email, password);
-//
-//        if (validUser) {
-//            // Jika email dan password valid, lanjutkan ke halaman beranda
-//            System.out.println("Login berhasil. Redirect ke halaman beranda.");
-//        } else {
-//            // Jika email dan password tidak sesuai dengan data di database
-//            errorLabel.setText("Email atau password salah. Silakan coba lagi.");
-//        }
+       
+
     }
 }

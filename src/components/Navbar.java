@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import model.SharedStageHolder;
+import model.User;
 import view.AddRecord;
 import view.Consultant;
 import view.HomePage;
@@ -19,13 +20,15 @@ import view.About;
 public class Navbar {
 
 	private Stage primaryStage;
-	public Navbar(Stage primaryStage) {
+	private User userSession;
+	public Navbar(Stage primaryStage,User userSession) {
 		// TODO Auto-generated constructor stub
+		this.userSession=userSession;
 		this.primaryStage=primaryStage;
 	}
 	
 	 public HBox createNavbar() {
-	        HBox navbar = new HBox(298);
+	        HBox navbar = new HBox(290);
 	        
 	        HBox left=new HBox(5);
 	        Image image = new Image("/images/logo.png"); // Adjust the path to your image.
@@ -37,22 +40,24 @@ public class Navbar {
 	        });
 	        Button homeButton = new Button("Home");
 	        homeButton.setOnAction(event-> {
-	          new HomePage(primaryStage).show();
+	          new HomePage(primaryStage,userSession).show();
 	    	});
 	        Button aboutButton = new Button("About");
 	        aboutButton.setOnAction(event-> {
-	        	new About(primaryStage).show();
+	        	new About(primaryStage,userSession).show();
 	    	});
 	        Button consultantButton = new Button("Consultant");
 	        consultantButton.setOnAction(event-> {
-	        	new Consultant(primaryStage).show();
+	        	new Consultant(primaryStage,userSession).show();
 	    	});
 	        
 	        left.getChildren().addAll(imageView,homeButton, aboutButton, consultantButton);
-	        Button loginButton = new Button("Login");
+	        Button loginButton = new Button(userSession.getFirstName());
 	        loginButton.setOnAction(event-> {
-	        	new Login(primaryStage).show();
-	    	});
+	        	//new Login(primaryStage).show();
+	        	System.out.println("User");
+ 	    	});
+	        
 	        loginButton.getStyleClass().add("btn-round-sm");
  	        loginButton.setStyle(
 	        	"-fx-border-color: #2e7d32;" +
@@ -65,6 +70,15 @@ public class Navbar {
 	        navbar.getStyleClass().add("navbar");
 
 	        return navbar;
+	    }
+	 
+	 public String trimFirstWord(String input) {
+	        String[] words = input.split("\\s+", 2); 
+	        if (words.length > 1) {
+	            return words[1];  
+	        } else {
+	            return ""; 
+	        }
 	    }
 	 
 	 
