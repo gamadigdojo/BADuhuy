@@ -16,8 +16,8 @@ public class Outcome extends Record{
 
 	private final String OutcomeID;
    
-	public Outcome(String OutcomeID,String name, Double total, String date) {
-		super(name, total, date);
+	public Outcome(String OutcomeID,String name, Double total, String date,int userId) {
+		super(name, total, date,userId);
 		this.OutcomeID=OutcomeID;
 		// TODO Auto-generated constructor stub
 	}
@@ -26,7 +26,7 @@ public class Outcome extends Record{
 	public static ArrayList<Outcome> retreiveRecord() {
 		ArrayList<Outcome> outcomes=new ArrayList<>();
 		
-		String query = "SELECT OutcomeID,Name,TotalOutcome,DateOutcome FROM Outcome";
+		String query = "SELECT OutcomeID,Name,TotalOutcome,DateOutcome,userId FROM Outcome";
 		try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
 		    ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -35,9 +35,10 @@ public class Outcome extends Record{
 		    	String Name = resultSet.getString("Name");
 		    	Double TotalOutcome = resultSet.getDouble("TotalOutcome");
 		    	String DateOutcome = resultSet.getString("DateOutcome");
-		        
+		    	int userId= resultSet.getInt("userId");
+
 		        // Create a new ArrayList to store the data
-		        Outcome outcome=new Outcome(OutcomeID,Name,TotalOutcome,DateOutcome);
+		        Outcome outcome=new Outcome(OutcomeID,Name,TotalOutcome,DateOutcome,userId);
 		        outcomes.add(outcome);
 		        
 		    }
@@ -49,13 +50,14 @@ public class Outcome extends Record{
 
 	 
 	
-	public static void insertRecord(String Name,double TotalOutcome, String DateOutcome) throws SQLException {
-	    	  String insertSQL = "INSERT INTO Outcome (Name,  TotalOutcome,DateOutcome) VALUES (?, ?, ?)";
+	public static void insertRecord(String Name,double TotalOutcome, String DateOutcome,User userSession) throws SQLException {
+	    	  String insertSQL = "INSERT INTO Outcome (Name,  TotalOutcome,DateOutcome,userId) VALUES (?, ?, ?,?)";
 
 	          try (PreparedStatement preparedStatement = Database.connection.prepareStatement(insertSQL)) {
 	              preparedStatement.setString(1, Name);
 	              preparedStatement.setDouble(2, TotalOutcome);
 	              preparedStatement.setString(3, DateOutcome);
+	              preparedStatement.setInt(4, userSession.getUserId());
 
 	              // Execute the insert statement
 	              preparedStatement.executeUpdate();

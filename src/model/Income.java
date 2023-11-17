@@ -14,15 +14,15 @@ import javafx.beans.value.ObservableValue;
 public class Income extends Record{
 	
 	private final String IncomeID;
-	public Income(String IncomeID,String name, Double total, String date) {
-		super(name, total, date);
+	public Income(String IncomeID,String name, Double total, String date,int userId) {
+		super(name, total, date,userId);
 		this.IncomeID=IncomeID;
 	}
 	
 	public static ArrayList<Income> retreiveRecord() {
 		ArrayList<Income> incomes=new ArrayList<>();
 		
-		String query = "SELECT IncomeID,Name,TotalIncome,DateIncome FROM Income";
+		String query = "SELECT IncomeID,Name,TotalIncome,DateIncome,userId FROM Income";
 		try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
 		    ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -31,9 +31,10 @@ public class Income extends Record{
 		    	String Name = resultSet.getString("Name");
 		    	Double TotalIncome = resultSet.getDouble("TotalIncome");
 		    	String DateIncome = resultSet.getString("DateIncome");
+		    	int userId= resultSet.getInt("userId");
 		        
 		        // Create a new ArrayList to store the data
-		        Income income=new Income(IncomeID,Name,TotalIncome,DateIncome);
+		        Income income=new Income(IncomeID,Name,TotalIncome,DateIncome,userId);
 		        incomes.add(income);
 		        
 		    }
@@ -44,14 +45,16 @@ public class Income extends Record{
 		return incomes;
 	}
 	
-	public static void insertRecord(String Name,double TotalIncome, String DateIncome) throws SQLException {
+	public static void insertRecord(String Name,double TotalIncome, String DateIncome, User userSession) throws SQLException {
 	    
-        String insertSQL = "INSERT INTO Income (Name,  TotalIncome,DateIncome) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO Income (Name,  TotalIncome,DateIncome,userId) VALUES (?, ?, ?,?)";
 
         try (PreparedStatement preparedStatement = Database.connection.prepareStatement(insertSQL)) {
             preparedStatement.setString(1, Name);
             preparedStatement.setDouble(2, TotalIncome);
             preparedStatement.setString(3, DateIncome);
+            preparedStatement.setInt(4, userSession.getUserId());
+
 
             // Execute the insert statement
             preparedStatement.executeUpdate();

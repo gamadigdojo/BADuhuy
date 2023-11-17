@@ -186,41 +186,44 @@ public class HomePage {
 	 
 	
 	public void printRecord(String option, VBox recordList) {
-		 Image incomeImg = new Image("/images/income.png"); 
-	        ImageView incomeImage = new ImageView(incomeImg);
-	        incomeImage.setFitWidth(20); 
-	        incomeImage.setFitHeight(20);
-	        
-	        Image outcomeImg = new Image("/images/outcome.png"); 
-	        ImageView outcomeImage = new ImageView(outcomeImg);
-	        outcomeImage.setFitWidth(20); // Set the desired width
-	        outcomeImage.setFitHeight(20);
-	        
 	    for (Record item : combinedRecords) {
-	        HBox incomeBox = new HBox(15);
+	        if (item.getUserId() == userSession.getUserId()) {
+	            HBox incomeBox = new HBox(15);
+	            Image incomeImg = new Image("/images/income.png");
+	            ImageView incomeImage = new ImageView(incomeImg);
+	            incomeImage.setFitWidth(20);
+	            incomeImage.setFitHeight(20);
 
-	        if ((option.equals("All") || option.equals("Income")) && item instanceof Income) {
-	            int boxLength = 92 - item.getName().length();
- 	            Label income = new Label(String.format("%-20s %-"+boxLength+"s %s",
-	                    "+ Rp." + formatNumber( item.getTotal() ),
-	                    item.getName(),
-	                    item.getDate()));
-	            incomeBox.getChildren().addAll(incomeImage,income);
-	            incomeBox.getStyleClass().add("homeIncomeBox");
-	            recordList.getChildren().add(incomeBox);
-	        } else if ((option.equals("All") || option.equals("Outcome")) && item instanceof Outcome) {
-	            int boxLength = 95 - item.getName().length();
-	            Label outcome = new Label(String.format("%-20s %-"+boxLength+"s %s",
-	                    "- Rp." + formatNumber( item.getTotal()),
-	                    item.getName(),
-	                    item.getDate()));
+	            Image outcomeImg = new Image("/images/outcome.png");
+	            ImageView outcomeImage = new ImageView(outcomeImg);
+	            outcomeImage.setFitWidth(20);
+	            outcomeImage.setFitHeight(20);
 
-	            incomeBox.getChildren().addAll(outcomeImage,outcome);
-	            incomeBox.getStyleClass().add("homeIncomeBox");
-	            recordList.getChildren().add(incomeBox);
+	            if ((option.equals("All") || option.equals("Income")) && item instanceof Income) {
+	                int boxLength = 92 - item.getName().length();
+	                Label income = new Label(String.format("%-20s %-"+boxLength+"s %s",
+	                        "+ Rp." + formatNumber( item.getTotal() ),
+	                        item.getName(),
+	                        item.getDate()));
+	                incomeBox.getChildren().addAll(incomeImage, income);
+	                incomeBox.getStyleClass().add("homeIncomeBox");
+	                recordList.getChildren().add(incomeBox);
+	            } else if ((option.equals("All") || option.equals("Outcome")) && item instanceof Outcome) {
+	                int boxLength = 95 - item.getName().length();
+	                Label outcome = new Label(String.format("%-20s %-"+boxLength+"s %s",
+	                        "- Rp." + formatNumber( item.getTotal()),
+	                        item.getName(),
+	                        item.getDate()));
+
+	                incomeBox.getChildren().addAll(outcomeImage, outcome);
+	                incomeBox.getStyleClass().add("homeIncomeBox");
+	                recordList.getChildren().add(incomeBox);
+	            }
 	        }
 	    }
 	}
+
+	
 	
 	public void insertAndSortRecord(String option) {
 	    combinedRecords.addAll(incomeList);
@@ -253,15 +256,14 @@ public class HomePage {
 	public HBox createFooter(){
 		  HBox footer=new HBox(0); //root balance& addrecord
 		  Button addRecord=new Button("Add record");
-		  Label balance=new Label("Balance: 0");
-			
+ 			
 	        addRecord.setOnAction(event-> {
 	        	moveAddRecord();
 	    	});
 	        footer.getChildren().addAll(
-	        		balance,
 	        		addRecord
 	        		);
+	        footer.setAlignment(Pos.CENTER_RIGHT);  
 	        footer.getStyleClass().add("homeRecord"); //adding style to record;
 		return footer;
 	}

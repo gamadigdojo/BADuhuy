@@ -11,21 +11,31 @@ public class User {
 	private String lastName;
 	private String email;
 	private String password;
+	private int userId;
 	
 	PreparedStatement asd;
 	
-	public User(String firstName,String lastName, String email, String password) {
+	public User(String firstName,String lastName, String email, String password,int userId) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+		this.userId=userId;
 	}
 	
 	public String getFirstName() {
 		return firstName;
 	}
 
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -65,7 +75,8 @@ public class User {
 	                    // If a user with provided credentials exists, return the User object
 	                    String firstName = resultSet.getString("firstName");
 	                    String lastName = resultSet.getString("lastName");
-	                    return new User(firstName,lastName, email, password);
+	                    int userId=resultSet.getInt("userId");
+	                    return new User(firstName,lastName, email, password,userId);
 	                }
 	            }
 
@@ -75,4 +86,6 @@ public class User {
 	        
 	        return null;
 	    }
+
+	
 }

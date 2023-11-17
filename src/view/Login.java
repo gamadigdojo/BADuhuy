@@ -137,7 +137,6 @@ public class Login {
             return;
         }
 
-        
         if(password.isEmpty()) {
         	errorLabel.setText("Password harus diisi!");
             return;

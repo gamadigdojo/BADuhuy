@@ -141,9 +141,9 @@ void insertProduct() throws SQLException {
 	
 	 String type=comboBox.getValue();
 	    if(type.equals("Income")) {
-	    	Income.insertRecord(name,total, formattedDate);
+	    	Income.insertRecord(name,total, formattedDate,userSession);
 	    }else if(type.equals("Outcome")) {
-	    	Outcome.insertRecord(name, total, formattedDate);
+	    	Outcome.insertRecord(name, total, formattedDate,userSession);
 	    }
 	    
 
