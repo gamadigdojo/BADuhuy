@@ -10,10 +10,11 @@ import javafx.stage.Stage;
 import model.SharedStageHolder;
 import model.User;
 import view.AddRecord;
-import view.Consultant;
+import view.ForumView;
 import view.HomePage;
 import view.LandingPage;
 import view.Login;
+import view.Profile;
 import view.About;
 
 
@@ -30,7 +31,7 @@ public class Navbar {
 	 public HBox createNavbar() {
 	        HBox navbar = new HBox(290);
 	        
-	        HBox left=new HBox(5);
+	        HBox left=new HBox(4);
 	        Image image = new Image("/images/logo.png"); // Adjust the path to your image.
 	        ImageView imageView = new ImageView(image);
 	        imageView.setFitWidth(50); // Set the desired width
@@ -40,22 +41,23 @@ public class Navbar {
 	        });
 	        Button homeButton = new Button("Home");
 	        homeButton.setOnAction(event-> {
-	          new HomePage(primaryStage,userSession).show();
+	          new HomePage(primaryStage,userSession,"").show();
 	    	});
 	        Button aboutButton = new Button("About");
 	        aboutButton.setOnAction(event-> {
 	        	new About(primaryStage,userSession).show();
 	    	});
-	        Button consultantButton = new Button("Consultant");
-	        consultantButton.setOnAction(event-> {
-	        	new Consultant(primaryStage,userSession).show();
+	        Button forumButton = new Button("Forum");
+	        forumButton.setOnAction(event-> {
+	        	new ForumView(primaryStage,userSession).show();
 	    	});
 	        
-	        left.getChildren().addAll(imageView,homeButton, aboutButton, consultantButton);
+	        left.getChildren().addAll(imageView,homeButton, forumButton,aboutButton);
 	        Button loginButton = new Button(userSession.getFirstName());
 	        loginButton.setOnAction(event-> {
 	        	//new Login(primaryStage).show();
-	        	System.out.println("User");
+//	        	System.out.println("User");
+	        	new Profile(primaryStage,userSession).show();
  	    	});
 	        
 	        loginButton.getStyleClass().add("btn-round-sm");

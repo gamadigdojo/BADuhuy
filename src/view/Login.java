@@ -115,7 +115,6 @@ public class Login {
 
         //----------------SETUP-----------------//
         root.setTop(logoBox);
-        root.setTop(logoBox);
         root.setCenter(stackPane);
         Scene scene = new Scene(root, 700, 500);
         scene.getStylesheets().add(getClass().getResource("../css/style.css").toExternalForm());
@@ -155,7 +154,7 @@ public class Login {
         	errorLabel.setText("User tidak ditemukan");
         	return;
         }else {
-        	new HomePage(primaryStage,userSession).show();
+        	new HomePage(primaryStage,userSession,"").show();
         }
 
        

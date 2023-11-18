@@ -46,8 +46,7 @@ public class HomePage {
     private Stage primaryStage;
     User userSession;
 
-	
-	 ArrayList<Income> incomeList=Income.retreiveRecord();
+    ArrayList<Income> incomeList=Income.retreiveRecord();
      ArrayList<Outcome> outcomeList=Outcome.retreiveRecord();    
      ArrayList<Record> combinedRecords= new ArrayList<>();
      SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", new Locale("en"));
@@ -55,10 +54,12 @@ public class HomePage {
      
      String filterSorting="Descending";
      String filterType="All";
+     String search="";
      
-     public HomePage(Stage primaryStage,User userSession){
+     public HomePage(Stage primaryStage,User userSession,String search){
     	 this.primaryStage=primaryStage;
     	 this.userSession=userSession;
+    	 this.search=search;
      }
  
 	public void show() {
@@ -180,26 +181,26 @@ public class HomePage {
         
         Income.deleteAllRecords();
         Outcome.deleteAllRecords();
-        moveAddRecord();
+        new HomePage(primaryStage,userSession,search).show();
     }
-	
+ 
 	 
 	
 	public void printRecord(String option, VBox recordList) {
-	    for (Record item : combinedRecords) {
-	        if (item.getUserId() == userSession.getUserId()) {
-	            HBox incomeBox = new HBox(15);
-	            Image incomeImg = new Image("/images/income.png");
-	            ImageView incomeImage = new ImageView(incomeImg);
-	            incomeImage.setFitWidth(20);
-	            incomeImage.setFitHeight(20);
+        for (Record item : combinedRecords) {
+            if (item.getName().toLowerCase().contains(search.toLowerCase()) && item.getUserId() == userSession.getUserId()) {
+                HBox incomeBox = new HBox(15);
+                Image incomeImg = new Image("/images/income.png");
+                ImageView incomeImage = new ImageView(incomeImg);
+                incomeImage.setFitWidth(20);
+                incomeImage.setFitHeight(20);
 
-	            Image outcomeImg = new Image("/images/outcome.png");
-	            ImageView outcomeImage = new ImageView(outcomeImg);
-	            outcomeImage.setFitWidth(20);
-	            outcomeImage.setFitHeight(20);
+                Image outcomeImg = new Image("/images/outcome.png");
+                ImageView outcomeImage = new ImageView(outcomeImg);
+                outcomeImage.setFitWidth(20);
+                outcomeImage.setFitHeight(20);
 
-	            if ((option.equals("All") || option.equals("Income")) && item instanceof Income) {
+                if ((option.equals("All") || option.equals("Income")) && item instanceof Income) {
 	                int boxLength = 92 - item.getName().length();
 	                Label income = new Label(String.format("%-20s %-"+boxLength+"s %s",
 	                        "+ Rp." + formatNumber( item.getTotal() ),
@@ -219,10 +220,9 @@ public class HomePage {
 	                incomeBox.getStyleClass().add("homeIncomeBox");
 	                recordList.getChildren().add(incomeBox);
 	            }
-	        }
-	    }
-	}
-
+            }
+        }
+    }
 	
 	
 	public void insertAndSortRecord(String option) {
@@ -271,10 +271,17 @@ public class HomePage {
 	 public HBox createHeader() {
 		    HBox header = new HBox();  //root header box
 	        VBox goalBar=new VBox();  
-	        TextField inputBar = new TextField();
+	        TextField inputBar = new TextField(search);
 	        goalBar.getChildren().addAll(new Label("Search income/outcome name"), inputBar);
 	        goalBar.getStyleClass().add("goalBar");      
 	        HBox.setHgrow(goalBar, javafx.scene.layout.Priority.ALWAYS);
+	        inputBar.setStyle("-fx-prompt-text-fill: darkgray;");
+	        inputBar.setPromptText("press enter");
+
+	        inputBar.setOnAction(event -> {
+	            search = inputBar.getText();
+	            new HomePage(primaryStage,userSession,search).show();
+	        });
 	        
  	        header.getChildren().addAll(goalBar); 
 	        header.getStyleClass().add("header"); //adding style to header

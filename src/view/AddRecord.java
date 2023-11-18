@@ -159,7 +159,7 @@ void insertProduct() throws SQLException {
 void backHome() {
 	//Scene HomePageScene= new HomePage().createHomeScene();
     //SharedStageHolder.getPrimaryStage().setScene(HomePageScene);
-	new HomePage(primaryStage,userSession).show();
+	new HomePage(primaryStage,userSession,"").show();
 }
 
 }

@@ -21,7 +21,6 @@ public class Income extends Record{
 	
 	public static ArrayList<Income> retreiveRecord() {
 		ArrayList<Income> incomes=new ArrayList<>();
-		
 		String query = "SELECT IncomeID,Name,TotalIncome,DateIncome,userId FROM Income";
 		try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
 		    ResultSet resultSet = preparedStatement.executeQuery();
