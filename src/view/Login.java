@@ -53,6 +53,10 @@ public class Login {
         Button loginButton = new Button("Sign In");
         Label signInLabel = new Label("Don't have an Account? ");
         Label signUpButton = new Label (" Sign Up");
+        signUpButton.setOnMouseClicked(event -> {
+        	new Register(primaryStage).show();
+        });
+
 
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
