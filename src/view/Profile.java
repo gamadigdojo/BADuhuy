@@ -60,71 +60,36 @@ public class Profile {
 	    container.getStyleClass().add("container");
 
 	    Button sb = new Button("Submit");
-	    Button logout=new Button("logout");
+	    Button logout=new Button("Logout");
 
-	    Label firstNameLabel = new Label("First name");
+	    Label firstNameLabel = new Label("First Name");
 	    TextField  firstNameText = new TextField(userSession.getFirstName());
 	    VBox firstNameContainer=new VBox();
 	    firstNameContainer.getChildren().addAll(firstNameLabel,firstNameText);
 	    
-	    Label lastNameLabel = new Label("First name");
+	    Label lastNameLabel = new Label("Last Name");
 	    TextField  lastNameText = new TextField(userSession.getLastName());
 	    VBox lastNameContainer= new VBox();
 	    lastNameContainer.getChildren().addAll(lastNameLabel,lastNameText);
 
-	    Label dobLabel = new Label("Tanggal Lahir ");
-	    DatePicker dobDate = new DatePicker();
-	    VBox dobContainer=new VBox();
-	    dobContainer.getChildren().addAll(dobLabel,dobDate);
-	    
-	    Label emailLabel=new Label("email");
+	  
+	    Label emailLabel=new Label("Email");
 	    TextField emailField = new TextField(userSession.getEmail());
 	    VBox emailContainer=new VBox();
 	    emailContainer.getChildren().addAll(emailLabel,emailField);
 	    
-	    Label passwordLabel=new Label("password");
+	    Label passwordLabel=new Label("Password");
 	    PasswordField passwordField = new PasswordField();
 	    VBox passwordContainer=new VBox();
 	    passwordContainer.getChildren().addAll(passwordLabel,passwordField);
 
-	    Label heightLabel = new Label("Tinggi Badan ");
-	    Slider heightSlider = new Slider(MIN, MAX, INITIAL_VALUE);
-	    Spinner heightSpinner = new Spinner(MIN, MAX, INITIAL_VALUE, STEP_INCREMENT);
-	    heightSlider.setBlockIncrement(STEP_INCREMENT);
-	    heightSlider.valueProperty().addListener((Observable o) -> heightSpinner.getValueFactory().setValue(heightSlider.getValue()));
-	    heightSpinner.valueProperty().addListener((Observable o) -> heightSlider.setValue((double) heightSpinner.getValue()));
-	    VBox heightContainer=new VBox();
-	    HBox heightSliderContainer=new HBox();
-	    heightSliderContainer.getChildren().addAll(heightSlider, heightSpinner);
-	    heightContainer.getChildren().addAll(heightLabel,heightSliderContainer);
 	    
-	    Label weightLabel = new Label("Berat Badan ");
-	    Slider weightSlider = new Slider(MIN, MAX, INITIAL_VALUE);
-	    Spinner weightSpinner = new Spinner(MIN, MAX, INITIAL_VALUE, STEP_INCREMENT);
-	    weightSlider.setBlockIncrement(STEP_INCREMENT);
-	    weightSpinner.getValueFactory().setValue(INITIAL_VALUE);
-	    weightSlider.valueProperty().addListener((Observable o) -> weightSpinner.getValueFactory().setValue(weightSlider.getValue()));
-	    weightSpinner.valueProperty().addListener((Observable o) -> weightSlider.setValue((double) weightSpinner.getValue()));
-	    VBox weightContainer=new VBox();
-	    HBox weightSliderContainer=new HBox();
-	    weightSliderContainer.getChildren().addAll(weightSlider,weightSpinner);
-	    weightContainer.getChildren().addAll(weightLabel,weightSliderContainer);
-
 	    sb.setOnAction(e -> {
 	        String email = emailField.getText();
 	        String password = passwordField.getText();
-
-//	        if (!email.contains("@")) {
-//	            errorLabel.setText("Email tidak valid. Harus mengandung karakter '@'.");
-//	            return;
-//	        }
-//
-//	        if (email.isEmpty() || password.isEmpty()) {
-//	            errorLabel.setText("Email dan password harus diisi.");
-//	            return;
-//	        } else {
-//	            errorLabel.setText("Login berhasil");
-//	        }
+	        
+	        User.updateUser(String.valueOf(userSession.getUserId()), firstNameText.getText(), lastNameText.getText(), emailField.getText(), passwordField.getText());
+	        new Login(primaryStage).show();
 	    });
 	    
 	    logout.setOnAction(e -> {
@@ -132,14 +97,9 @@ public class Profile {
  
 	    });
 	    
-	    
-
 	    VBox rootVBox = new VBox(
 	    		firstNameContainer,
 	    		lastNameContainer,
-	    		dobContainer,
-	    		heightContainer,
-	    		weightContainer,
 	    		emailContainer,
 	    		passwordContainer,
 	    		new HBox(5,sb,logout)

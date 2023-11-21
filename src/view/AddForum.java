@@ -48,12 +48,11 @@ public class AddForum {
 		
 		VBox inputBox = new VBox(10); // 10 is the spacing between elements
 		 
-        // Title input
 		titleTextArea.setPromptText("Enter title");
-		 contentTextArea.setPromptText("Enter content");
-	   	 contentTextArea.setPrefWidth(200); // Choose the desired width
-		 contentTextArea.setPrefHeight(100); 
-		  contentTextArea.setWrapText(true);
+		contentTextArea.setPromptText("Enter content");
+	   	contentTextArea.setPrefWidth(200); // Choose the desired width
+		contentTextArea.setPrefHeight(100); 
+		contentTextArea.setWrapText(true);
 
         // Submit button
         Button submitButton = new Button("Submit");

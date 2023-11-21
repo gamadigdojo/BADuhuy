@@ -135,7 +135,7 @@ public class HomePage {
 	    sortingTypeComboBox.getStyleClass().addAll("btn","btn-outline","btn-sm","btn-round-sm");
 
 	    
-	    Button export=new Button("export data");
+	    Button export=new Button("Export Data");
 	    export.setOnAction(event -> {
 	    	confirmationDialog();
 	    });
@@ -150,8 +150,7 @@ public class HomePage {
 	private void confirmationDialog() {
         Alert confirmationDialog = new Alert(AlertType.WARNING);
         confirmationDialog.setTitle("Confirmation Dialog");
-        confirmationDialog.setHeaderText("Are you sure you want to export the data?\n"
-        		+ "EXPORTING DATA WILL DELETE ALL YOUR RECORD");
+        confirmationDialog.setHeaderText("Are you sure you want to export the data?");
         
         // Add OK and Cancel buttons to the dialog
         ButtonType buttonTypeOK = new ButtonType("OK", ButtonData.OK_DONE);
@@ -171,16 +170,18 @@ public class HomePage {
 	public  void exportToNotepad(ArrayList<Record> records, String filePath) {
         try (FileWriter writer = new FileWriter(filePath)) {
             // Iterate through the records and write each record to the file
+            writer.write("income/outcome data: "+userSession.getFirstName()+"\n");
             for (Record record : records) {
-                writer.write(record.toString() + System.lineSeparator());
+            	if(record.getUserId() == userSession.getUserId()) {
+                    writer.write(record.toString() + System.lineSeparator());
+            	}
             }
             System.out.println("Export successful!");
         } catch (IOException e) {
             System.err.println("Error exporting records: " + e.getMessage());
         }
         
-        Income.deleteAllRecords();
-        Outcome.deleteAllRecords();
+        
         new HomePage(primaryStage,userSession,search).show();
     }
  

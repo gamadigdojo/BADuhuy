@@ -3,6 +3,8 @@ package view;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -18,11 +20,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Database;
+import model.User;
 
 public class Register {
     private Stage primaryStage;
     private Database db;
     Connection connection;
+    ArrayList<User> users=User.retreiveRecord();
 
     private TextField firstNameField = new TextField();
     private TextField lastNameField = new TextField();
@@ -54,6 +58,10 @@ public class Register {
     Button registerButton = new Button("Create an account");
     Label signInLabel = new Label("Already have an Account? ");
     Label signInButton = new Label (" Sign in");
+    
+    signInButton.setOnMouseClicked(event -> {
+    	new Login(primaryStage).show();
+    });
 
     registerButton.setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -69,7 +77,7 @@ public class Register {
     
     VBox register = new VBox(10);
     
-    registerButton.getStyleClass().add("btn"); 
+    registerButton.getStyleClass().addAll("btn","btn-round"); 
     registerLabel.setStyle(
             "-fx-font-weight: 800; " +
             "-fx-font-size: 30px; " +
@@ -146,49 +154,27 @@ public class Register {
         String email = emailField.getText();
         String password = passwordField.getText();
         
-//        if (email.isEmpty() && password.isEmpty() && name.isEmpty()) {
-//            errorLabel.setText("Nama, Email, dan Password harus diisi!");
-//            return;
-//        }
-//        
-//        if (email.isEmpty() && password.isEmpty()) {
-//            errorLabel.setText("Email, dan Password harus diisi!");
-//            return;
-//        }
-//        
-//        if (name.isEmpty() && password.isEmpty()) {
-//            errorLabel.setText("Nama, dan Password harus diisi!");
-//            return;
-//        }
-//        
-//        if (name.isEmpty() && email.isEmpty()) {
-//            errorLabel.setText("Nama, dan Email harus diisi!");
-// 
-//        
-//        if (email.isEmpty()) {
-//            errorLabel.setText("Email harus diisi!");
-//            return;
-//        }
-//        
-//        if (name.isEmpty()) {
-//            errorLabel.setText("Nama harus diisi!");
-//        	 
-//            return;
-//        }
-//        
-//        if (password.isEmpty()) {
-//            errorLabel.setText("Password harus diisi!");
-//            return;
-//        }
-//
-//        // Validasi email harus mengandung karakter "@"
-//        if (!email.contains("@")) {
-//            errorLabel.setText("Email tidak valid. Harus mengandung karakter '@'!");
-//            return;
-//        }else {
-//        	errorLabel.setText("Berhasil");
-////        	 Validasi email, password, dan nama tidak boleh kosong
-//        }
+        if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
+            errorLabel.setText("please fill the required form");
+            return;
+        }
+        
+        if(firstName.length()>7) {
+        	errorLabel.setText("firstName maximum charachter is 7");
+            return;
+        }
+  
+        if (!email.contains("@")) {
+            errorLabel.setText("please enter the correct email format");
+            return;
+        } 
+        
+        for(User user:users) {
+        	if(user.getEmail() == email) {
+        		 errorLabel.setText("email already been added");
+                 return;
+        	}
+        }
 
         // Simpan data ke database
         String insertSQL = "INSERT INTO MsUser (firstName,lastName,Email,Password) VALUES (?, ?, ?, ?)";

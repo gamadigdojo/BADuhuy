@@ -34,8 +34,6 @@ public class Main extends Application {
         
         new LandingPage(primaryStage).show();
      }
-
-
 }
 
 

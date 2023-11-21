@@ -38,7 +38,7 @@ public class AddRecord {
     TextField fieldPrice = new TextField();
     Label labelDate = new Label("Input date:");
     ComboBox<String> comboBox = new ComboBox<>();
-    private Button addButton = new Button("Add new record");
+    private Button addButton = new Button("Save");
     
     DatePicker datePicker = new DatePicker();
 

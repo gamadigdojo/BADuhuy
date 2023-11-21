@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 public class User {
@@ -86,6 +87,56 @@ public class User {
 	        
 	        return null;
 	    }
+	 
+	 public static void updateUser(String userID,String firstName,String lastName,String email,String password) {
+		  if (firstName.isEmpty() || lastName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+			  System.out.println("please fill the required form");
+	            return;
+	        }
+	        
+	    	String updateSQL = "UPDATE msUser SET firstName = ?, lastName = ?, email = ?,password = ?  WHERE userID = ?";
+ 	        try (PreparedStatement preparedStatement = Database.connection.prepareStatement(updateSQL)) {
+	            preparedStatement.setString(1, firstName);
+	            preparedStatement.setString(2, lastName);
+	            preparedStatement.setString(3, email);
+	            preparedStatement.setString(4, password);
+	            preparedStatement.setString(5, userID);
+	            int rowsAffected = preparedStatement.executeUpdate();
+	            if (rowsAffected > 0) {
+	                System.out.println("Product with userID " + userID + " updated successfully.");
+	            } else {
+	                System.out.println("Product with userID " + userID + " not found or not updated.");
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	 
+	 public static ArrayList<User> retreiveRecord() {
+			ArrayList<User> users=new ArrayList<>();
+			
+			String query = "SELECT userId,firstName,lastName,email,password FROM msuser";
+			try (PreparedStatement preparedStatement = Database.connection.prepareStatement(query)) {
+			    ResultSet resultSet = preparedStatement.executeQuery();
 
+			    while (resultSet.next()) {
+			    	String firstName = resultSet.getString("firstName");
+			    	String lastName= resultSet.getString("lastName");
+			    	String email= resultSet.getString("email");
+			    	String password= resultSet.getString("password");
+			    	int userId=  resultSet.getInt("userId");
+
+			        // Create a new ArrayList to store the data
+			    	User user=new User(firstName,lastName, email, password,userId);
+			    	users.add(user);
+			    }
+			} catch (SQLException e) {
+			    e.printStackTrace();
+			}
+			
+			return users;
+		}
+
+	 
 	
 }
